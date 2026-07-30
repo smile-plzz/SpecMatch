@@ -3,8 +3,8 @@
 Find games that run perfectly on your PC. Hardware-aware game recommendations
 powered by a real hardware scan, RAWG's game database, and Mistral AI.
 
-See `PLAN.md` for the full pivot architecture, locked-in decisions, and phase
-status.
+Repository: [`smile-plzz/SpecMatch`](https://github.com/smile-plzz/SpecMatch) —
+see [Documentation](#documentation) for where each part is written up.
 
 ---
 
@@ -46,17 +46,21 @@ status.
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
+# 1. Clone the repo
+git clone https://github.com/smile-plzz/SpecMatch.git
+cd SpecMatch
+
+# 2. Install dependencies
 npm install
 
-# 2. Set up environment variables
+# 3. Set up environment variables
 cp .env.example .env
 # Edit .env and add your RAWG API key
 
-# 3. Run locally
+# 4. Run locally
 npm run dev
 
-# 4. Build for production
+# 5. Build for production
 npm run build
 ```
 
@@ -129,7 +133,7 @@ picks up `api/recommend.js` as a serverless function.
 ## Project Structure
 
 ```
-specmatch/
+SpecMatch/
 ├── api/
 │   ├── recommend.js              # Single Mistral call — server-side only
 │   └── igdb.js                   # IGDB proxy (fallback game data) — server-side only
@@ -196,6 +200,19 @@ tracing, etc.) — not sourced from official system requirements, since no free
 API publishes those at scale. Use the Compare tab to sanity-check any specific
 game. AI insights (when enabled) explain these numbers in plain language but
 never override them.
+
+---
+
+## Documentation
+
+| Document | What's in it |
+|----------|--------------|
+| [`README.md`](https://github.com/smile-plzz/SpecMatch/blob/main/README.md) | This file — setup, API keys, deployment, project structure |
+| [`PLAN.md`](https://github.com/smile-plzz/SpecMatch/blob/main/PLAN.md) | Architecture decisions, phase-by-phase status, and what was verified in each |
+| [`utility/README.md`](https://github.com/smile-plzz/SpecMatch/blob/main/utility/README.md) | Windows scan utility — running the script, building the .exe, what it collects |
+
+The compiled `collect-specs.exe` ships on the repo's
+[Releases](https://github.com/smile-plzz/SpecMatch/releases) page.
 
 ---
 
