@@ -7,7 +7,7 @@ export function AIInsights({ specs, ranked, aiData, onAiData, showToast }) {
   async function handleClick() {
     setLoading(true)
     try {
-      const data = await getAiRecommendations(specs, ranked.slice(0, 15))
+      const data = await getAiRecommendations(specs, ranked.slice(0, 10)) // must match api/recommend.js's MAX_CANDIDATES
       onAiData(data)
     } catch (err) {
       showToast?.(err.message, 'error')
