@@ -1,4 +1,4 @@
-import { rawgImage } from '../lib/rawg'
+import { rawgThumb } from '../lib/rawg'
 
 const TIER_LABEL = { smooth: 'Runs Smoothly', playable: 'Playable', poor: 'Not Recommended' }
 
@@ -7,7 +7,7 @@ export function GameCard({ game, score, onOpen, onToggleWishlist, isWishlisted, 
     <div className={`game-card game-card--${score?.tier ?? 'unknown'}`}>
       <button className="game-card__image" onClick={() => onOpen(game)}>
         {game.background ? (
-          <img src={rawgImage(game.background, { w: 640, h: 360 })} alt={game.title} loading="lazy" />
+          <img src={rawgThumb(game.background)} alt={game.title} loading="lazy" />
         ) : (
           <div className="game-card__image-fallback" />
         )}

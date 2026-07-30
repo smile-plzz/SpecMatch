@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getLibrary, setLibraryStatus } from '../lib/store'
-import { fetchGameDetails, fetchGameScreenshots, enrichGame, rawgImage } from '../lib/rawg'
+import { fetchGameDetails, fetchGameScreenshots, enrichGame } from '../lib/rawg'
 
 const TIER_LABEL = { smooth: 'Runs Smoothly', playable: 'Playable', poor: 'Not Recommended' }
 
@@ -39,7 +39,7 @@ export function GameDetailModal({ game, score, aiInfo, catalog, onOpenSimilar, o
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal__close" onClick={onClose}>×</button>
         {shown.background && (
-          <img className="modal__image" src={rawgImage(shown.background, { w: 1280, mode: 'resize' })} alt={shown.title} />
+          <img className="modal__image" src={shown.background} alt={shown.title} />
         )}
         <h2>{shown.title}</h2>
 
@@ -60,7 +60,7 @@ export function GameDetailModal({ game, score, aiInfo, catalog, onOpenSimilar, o
         {screenshots.length > 0 && (
           <div className="modal__screenshots">
             {screenshots.map((url) => (
-              <img key={url} src={rawgImage(url, { w: 420, h: 236 })} alt="" loading="lazy" />
+              <img key={url} src={url} alt="" loading="lazy" />
             ))}
           </div>
         )}

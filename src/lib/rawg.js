@@ -87,13 +87,15 @@ export async function fetchGenres() {
   return rawgFetch('/genres')
 }
 
-// Requests a resized RAWG image variant instead of the full-resolution
-// original. RAWG serves these via a path segment inserted after `/media/`:
-// crop/{w}/{h}/... (fixed aspect, cropped) or resize/{w}/... (proportional).
-export function rawgImage(url, { w, h, mode = 'crop' } = {}) {
-  if (!url || !w) return url
-  const size = mode === 'crop' && h ? `${w}/${h}` : `${w}`
-  return url.replace('/media/', `/media/${mode}/${size}/`)
+// RAWG's media CDN does NOT support arbitrary resize/crop dimensions — it
+// only serves a small set of precomputed variants. Verified live (this
+// session): only `crop/600/400` resolves; every other width/height/resize
+// combination 404s, including the ones this helper used to construct. Use
+// the one working thumbnail preset for card grids; everywhere else (hero
+// art, screenshot gallery, lightbox) use the original full-resolution URL.
+export function rawgThumb(url) {
+  if (!url) return url
+  return url.replace('/media/', '/media/crop/600/400/')
 }
 
 // Normalizes a RAWG game object into the shape the recommendation/scoring/UI
