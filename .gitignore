@@ -6,3 +6,4 @@ dist-ssr/
 *.local
 .vercel
 *.log
+utility/report.json

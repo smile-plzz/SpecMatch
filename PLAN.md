@@ -31,9 +31,14 @@ so status/decisions travel with the code.
   no PII) + `utility/build-exe.ps1` (ps2exe). Verified locally: real hardware
   scan produced correct JSON (CPU/GPU model, RAM, SSD/HDD, resolution/refresh,
   DirectX version) matching `src/lib/specs.js`'s schema exactly.
-- [ ] **Phase 2 — Upload + deterministic matching**: upload page/component,
-  server-side JSON schema validation, wire utility report into the app as the
-  primary spec source.
+- [x] **Phase 2 — Upload + deterministic matching**: `UploadReport.jsx` (file
+  input → `parseUtilityReport` validation → schema-checked specs), wired into
+  both Onboarding (primary path, browser estimate demoted to fallback) and
+  SpecPanel (rescan without redoing onboarding). Client-side validation rejects
+  unexpected fields/oversized files; server-side re-validation lands with the
+  Phase 3 API since that's the first server-side touchpoint for uploaded data.
+  Verified: uploaded a real `report.json` from the Phase 1 utility through the
+  browser file picker, confirmed exact GPU/CPU model rendered correctly.
 - [ ] **Phase 3 — Mistral integration**: `api/recommend.js` serverless function,
   one Mistral call, server-side API key via Vercel env var.
 - [ ] **Phase 4 — UX polish**: mostly covered by Phase 0's component set;

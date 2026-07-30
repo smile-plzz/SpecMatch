@@ -1,10 +1,17 @@
 import { useState } from 'react'
 import { CPU_TIERS, GPU_TIERS } from '../lib/specs'
+import { UploadReport } from './UploadReport'
 
 export function SpecPanel({ specs, onChange }) {
   const [editing, setEditing] = useState(false)
+  const [uploadError, setUploadError] = useState(null)
 
   if (!specs) return null
+
+  function handleRescan(uploaded) {
+    setUploadError(null)
+    onChange(uploaded)
+  }
 
   return (
     <div className="spec-panel">
@@ -48,6 +55,10 @@ export function SpecPanel({ specs, onChange }) {
               onChange={(e) => onChange({ ...specs, ramGB: Number(e.target.value) || null })}
             />
           </label>
+          <div className="spec-panel__rescan">
+            <UploadReport onUpload={handleRescan} onError={setUploadError} label="Upload new scan report" />
+            {uploadError && <p className="onboarding__error">{uploadError}</p>}
+          </div>
         </div>
       )}
     </div>

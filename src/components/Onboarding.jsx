@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import { detectBrowserSpecs } from '../lib/specs'
 import { SpecPanel } from './SpecPanel'
+import { UploadReport } from './UploadReport'
 
 export function Onboarding({ onComplete }) {
   const [step, setStep] = useState(1)
   const [specs, setSpecs] = useState(null)
+  const [error, setError] = useState(null)
 
   function handleDetect() {
     setSpecs(detectBrowserSpecs())
+    setStep(3)
+  }
+
+  function handleUpload(uploaded) {
+    setError(null)
+    setSpecs(uploaded)
     setStep(3)
   }
 
@@ -24,13 +32,18 @@ export function Onboarding({ onComplete }) {
 
         {step === 2 && (
           <>
-            <h2>Detect your specs</h2>
+            <h2>Get your specs</h2>
             <p>
-              A quick browser estimate works now (CPU cores, RAM, rough GPU). For exact
-              CPU/GPU model, DirectX level, and refresh rate, the desktop scan utility
-              is coming soon — this quick estimate is a fine starting point.
+              For your exact CPU/GPU model, DirectX level, and refresh rate, run the
+              SpecMatch scan utility (<code>utility/collect-specs.ps1</code> in the
+              repo — a compiled .exe will be on GitHub Releases) and upload the
+              <code> report.json</code> it writes. Nothing is uploaded automatically —
+              you review the file first.
             </p>
-            <button className="btn btn--primary" onClick={handleDetect}>Detect in browser</button>
+            <UploadReport onUpload={handleUpload} onError={setError} label="Upload scan report" />
+            {error && <p className="onboarding__error">{error}</p>}
+            <p className="onboarding__or">or</p>
+            <button className="btn" onClick={handleDetect}>Quick browser estimate instead</button>
           </>
         )}
 

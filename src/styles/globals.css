@@ -83,8 +83,13 @@ h1, h2, h3 { font-family: 'Rajdhani', sans-serif; letter-spacing: 0.02em; }
 
 .spec-panel__edit { margin-left: auto; background: none; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 0.3rem 0.7rem; cursor: pointer; }
 
-.spec-panel__edit-form { display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap; }
+.spec-panel__edit-form { display: flex; gap: 1rem; margin-top: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
 .spec-panel__edit-form label { display: flex; flex-direction: column; font-size: 0.8rem; color: var(--text-muted); gap: 0.25rem; }
+.spec-panel__rescan { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.onboarding__error { color: var(--poor); font-size: 0.9rem; }
+.onboarding__or { color: var(--text-muted); font-size: 0.8rem; margin: 0.75rem 0; }
+.onboarding__card code { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.1rem 0.35rem; font-family: 'Space Mono', monospace; font-size: 0.85em; }
 
 .discover__controls { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
 
