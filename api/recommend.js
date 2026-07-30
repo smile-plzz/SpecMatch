@@ -26,7 +26,9 @@ const MISTRAL_MODEL = 'ministral-8b-latest'
 // before loosening either.
 const MAX_CANDIDATES = 6
 const MAX_BODY_BYTES = 48 * 1024
-const MISTRAL_TIMEOUT_MS = 7500 // real margin under Vercel's 10s kill, not right at the edge
+const MISTRAL_TIMEOUT_MS = 8500 // live-measured: 6 real candidates ~6s typical, but variance
+// occasionally pushed past 7.5s and 502'd. Vercel's hard kill is 10s, so 8.5s still leaves
+// margin for our own response overhead.
 const MAX_TOKENS = 1400
 const RATE_LIMIT = { limit: 10, windowMs: 10 * 60 * 1000 } // 10 Mistral calls / 10 min / IP
 
