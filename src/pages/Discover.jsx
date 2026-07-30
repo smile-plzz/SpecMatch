@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { fetchPopularGames, enrichGame } from '../lib/rawg'
+import { fetchPopularGames, fetchGenres, enrichGame } from '../lib/rawg'
 import { scoreAndRankGames } from '../lib/scoring'
 import { GameCard } from '../components/GameCard'
 import { AIInsights } from '../components/AIInsights'
@@ -15,25 +15,38 @@ const MOOD_GENRE = {
   'Quick Play': 'arcade,indie',
 }
 
+const SORTS = {
+  match: { label: 'Best match', fn: null }, // scoreAndRankGames's tier order is already the default
+  rating: { label: 'Highest rated', fn: (a, b) => (b.game.rating ?? 0) - (a.game.rating ?? 0) },
+  newest: { label: 'Newest', fn: (a, b) => new Date(b.game.released ?? 0) - new Date(a.game.released ?? 0) },
+}
+
 export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [mood, setMood] = useState(null)
+  const [genre, setGenre] = useState('')
+  const [genres, setGenres] = useState([])
+  const [sort, setSort] = useState('match')
   const [query, setQuery] = useState('')
   const [wishlist, setWishlist] = useState(getWishlist())
 
   useEffect(() => {
+    fetchGenres().then((data) => setGenres(data.results || [])).catch(() => {})
+  }, [])
+
+  useEffect(() => {
     setLoading(true)
     setError(null)
-    fetchPopularGames({ genres: mood ? MOOD_GENRE[mood] : undefined })
+    fetchPopularGames({ genres: mood ? MOOD_GENRE[mood] : genre || undefined })
       .then((data) => setGames((data.results || []).map(enrichGame)))
       .catch((err) => {
         setError(err.message)
         showToast?.('Could not load games — check your RAWG API key', 'error')
       })
       .finally(() => setLoading(false))
-  }, [mood])
+  }, [mood, genre])
 
   const ranked = useMemo(() => {
     if (!specs) return games.map((game) => ({ game, score: null }))
@@ -41,10 +54,14 @@ export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
   }, [games, specs])
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return ranked
-    const q = query.toLowerCase()
-    return ranked.filter(({ game }) => game.title.toLowerCase().includes(q))
-  }, [ranked, query])
+    let list = ranked
+    if (query.trim()) {
+      const q = query.toLowerCase()
+      list = list.filter(({ game }) => game.title.toLowerCase().includes(q))
+    }
+    const sortFn = SORTS[sort]?.fn
+    return sortFn ? [...list].sort(sortFn) : list
+  }, [ranked, query, sort])
 
   function handleToggleWishlist(gameId) {
     setWishlist(toggleWishlist(gameId))
@@ -69,6 +86,15 @@ export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
               {m}
             </button>
           ))}
+        </div>
+        <div className="discover__filter-row">
+          <select className="discover__select" value={genre} onChange={(e) => setGenre(e.target.value)} disabled={!!mood}>
+            <option value="">All genres</option>
+            {genres.map((g) => <option key={g.id} value={g.slug}>{g.name}</option>)}
+          </select>
+          <select className="discover__select" value={sort} onChange={(e) => setSort(e.target.value)}>
+            {Object.entries(SORTS).map(([key, { label }]) => <option key={key} value={key}>{label}</option>)}
+          </select>
         </div>
       </div>
 

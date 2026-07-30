@@ -50,8 +50,11 @@ so status/decisions travel with the code.
   specs, empty candidates, missing API key) — all five cases return the
   correct status/error without a live Mistral key. Full live-call path still
   needs a real `MISTRAL_API_KEY` to verify end-to-end.
-- [ ] **Phase 4 — UX polish**: mostly covered by Phase 0/3's component set;
-  revisit once live RAWG/Mistral keys are available to see real content.
+- [x] **Phase 4 — UX polish**: added genre filter + sort control (Best match /
+  Highest rated / Newest) to Discover, on top of Phase 0's mood filters/search
+  and Phase 3's AI insights/hidden-gem badges. Verified: dropdowns render and
+  don't crash without live RAWG data; deeper "does this look good with real
+  content" pass still needs a live `VITE_RAWG_KEY`.
 - [ ] **Phase 5 — Hardening & scale-out**: rate-limiting `/api/recommend`, IGDB
   fallback, macOS/Linux utility ports (deferred, not MVP).
 
