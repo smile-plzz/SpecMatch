@@ -150,6 +150,43 @@ plan — the Phase 0-5 plan above is preserved in this file's history).
   (does the AI actually write specific, non-generic text) pending post-push
   spot-check against spec-match-ten.vercel.app.
 
+- [x] **Phase 8 — Premium UI**: the visual redesign this round promised.
+  Design references are Xbox App (green accent, art-forward tiles with the
+  verdict badge sitting on the cover art, one big featured tile) and Discord
+  (persistent left nav rail, layered dark surfaces, pill controls) — the
+  user's explicit choice, not a blend of every platform named in the brief.
+  `globals.css` rewritten as a token system (surface levels, radii, shadows,
+  status colors, one `--ease`), so the light theme is a token swap rather
+  than a second stylesheet. Shell: sidebar rail with nav + live library/
+  wishlist counts + a "your rig" summary card, sticky topbar with per-tab
+  title/subtitle, spec strip restyled into labelled stat chips (now also
+  showing resolution/refresh when the desktop scan provides it). Discover:
+  featured hero tile (the deterministic #1 pick — AI explanation when
+  loaded, otherwise a deterministic line built from the same tier/FPS the
+  badge shows, so the two can't disagree), skeleton tiles while RAWG loads,
+  result count, retryable error card, styled empty state. Cards: scrim +
+  zoom-on-hover art, dot-prefixed tier badge, heart button moved onto the
+  art. Modal: full-bleed hero, chip meta row, snap-scrolling screenshots,
+  clamped description with Read more, stat grid, AI panel. Onboarding:
+  3-step progress, feature list, back links. New `Icons.jsx` (inline SVG, no
+  icon package — nothing to fetch, and they inherit `currentColor`).
+  Behavior guardrail: zero new network calls — Library/Wishlist tier badges
+  reuse `scoreGameForSpecs` on data those pages already fetch, and the hero
+  reuses the list-endpoint art.
+  Fixed while here: the detail modal's Played/Liked/Disliked buttons wrote
+  to localStorage but never re-rendered, so the active state only appeared
+  after reopening the modal (now local state); Library's wishlist heart was
+  wired to a no-op; Escape and body-scroll-lock added to the modal; theme
+  now also lands on `<html>`, so overscroll and the onboarding screen stop
+  showing dark chrome in light mode.
+  Verified: `npm run build` clean, and a Playwright pass (`.shots.mjs`,
+  kept out of the repo) served `dist/` with RAWG's list/detail/screenshot/
+  genre endpoints and the media CDN stubbed — captured Discover (dark +
+  light), the detail modal, Library, Compare, the spec editor, mobile
+  412px, and all three onboarding steps, with zero console/page errors on
+  every screen. Live spot-check against spec-match-ten.vercel.app still
+  pending post-push, same as Phases 6-7.
+
 ## Known gaps / needs from user
 
 - No local `.env` with a real `VITE_RAWG_KEY` — local dev-server testing of

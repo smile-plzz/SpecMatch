@@ -35,6 +35,8 @@ status.
 - **Personal library** — track played, liked, disliked games
 - **Wishlist** — save games to play later
 - **Compare tool** — side-by-side PC vs game requirements
+- **Xbox/Discord-style interface** — nav rail, featured hidden-gem hero tile,
+  art-forward game cards with the verdict badge on the cover, skeleton loading
 - **Dark / Light theme**
 - **PWA** — installable, works offline after first load
 - **API response caching** — 6-hour localStorage cache to stay under RAWG rate limits
@@ -136,8 +138,10 @@ specmatch/
 ├── src/
 │   ├── components/
 │   │   ├── AIInsights.jsx        # Profile summary + upgrade suggestions
-│   │   ├── GameCard.jsx          # Individual game card with action buttons
-│   │   ├── GameDetailModal.jsx   # Full game detail + compatibility table
+│   │   ├── GameCard.jsx          # Game tile: cover art, verdict badge, wishlist
+│   │   ├── GameCardSkeleton.jsx  # Loading placeholder tile
+│   │   ├── GameDetailModal.jsx   # Full game detail + compatibility stats
+│   │   ├── Icons.jsx             # Inline SVG icon set (no icon package)
 │   │   ├── Onboarding.jsx        # First-run setup: upload scan or browser estimate
 │   │   ├── SpecPanel.jsx         # PC specs display + edit/rescan
 │   │   ├── UploadReport.jsx      # report.json file picker + validation
@@ -158,8 +162,8 @@ specmatch/
 │   │   ├── Library.jsx           # Played/liked/disliked games
 │   │   └── Wishlist.jsx          # Saved games
 │   ├── styles/
-│   │   └── globals.css           # Design system + dark/light themes
-│   ├── App.jsx                   # Root component + state management
+│   │   └── globals.css           # Design tokens + component styles, both themes
+│   ├── App.jsx                   # App shell (nav rail, topbar) + state management
 │   └── main.jsx                  # Entry point
 ├── utility/
 │   ├── collect-specs.ps1         # Windows hardware scan (CIM/WMI, no PII)

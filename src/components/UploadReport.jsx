@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { parseUtilityReport } from '../lib/specs'
+import { IconUpload } from './Icons'
 
 const MAX_REPORT_BYTES = 64 * 1024 // report.json is a few hundred bytes normally — generous cap against abuse
 
-export function UploadReport({ onUpload, onError, label = 'Upload scan report' }) {
+export function UploadReport({ onUpload, onError, label = 'Upload scan report', variant = 'primary' }) {
   const inputRef = useRef(null)
   const [busy, setBusy] = useState(false)
 
@@ -39,8 +40,12 @@ export function UploadReport({ onUpload, onError, label = 'Upload scan report' }
         onChange={handleFile}
         style={{ display: 'none' }}
       />
-      <button className="btn btn--primary" disabled={busy} onClick={() => inputRef.current?.click()}>
-        {busy ? 'Reading…' : label}
+      <button
+        className={variant === 'primary' ? 'btn btn--primary' : 'btn'}
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+      >
+        {busy ? <><span className="spinner" /> Reading…</> : <><IconUpload size={16} /> {label}</>}
       </button>
     </>
   )
