@@ -39,10 +39,19 @@ so status/decisions travel with the code.
   Phase 3 API since that's the first server-side touchpoint for uploaded data.
   Verified: uploaded a real `report.json` from the Phase 1 utility through the
   browser file picker, confirmed exact GPU/CPU model rendered correctly.
-- [ ] **Phase 3 — Mistral integration**: `api/recommend.js` serverless function,
-  one Mistral call, server-side API key via Vercel env var.
-- [ ] **Phase 4 — UX polish**: mostly covered by Phase 0's component set;
-  revisit once Phase 2/3 data shapes are final.
+- [x] **Phase 3 — Mistral integration**: `api/recommend.js` (one Mistral call,
+  `MISTRAL_API_KEY` server-side only, validates specs/candidates shape and
+  size independently of the client, JSON-mode response). Client side:
+  `src/lib/mistral.js` + `AIInsights.jsx` (opt-in button, not automatic —
+  avoids burning API spend on every page load), wired into `Discover.jsx`
+  (profile summary + upgrade suggestions + hidden-gem badges) and
+  `GameDetailModal.jsx` (per-game explanation). Verified: unit-tested
+  `api/recommend.js`'s handler directly (wrong method, missing/malformed
+  specs, empty candidates, missing API key) — all five cases return the
+  correct status/error without a live Mistral key. Full live-call path still
+  needs a real `MISTRAL_API_KEY` to verify end-to-end.
+- [ ] **Phase 4 — UX polish**: mostly covered by Phase 0/3's component set;
+  revisit once live RAWG/Mistral keys are available to see real content.
 - [ ] **Phase 5 — Hardening & scale-out**: rate-limiting `/api/recommend`, IGDB
   fallback, macOS/Linux utility ports (deferred, not MVP).
 

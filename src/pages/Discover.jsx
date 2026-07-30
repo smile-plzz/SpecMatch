@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { fetchPopularGames, enrichGame } from '../lib/rawg'
 import { scoreAndRankGames } from '../lib/scoring'
 import { GameCard } from '../components/GameCard'
+import { AIInsights } from '../components/AIInsights'
 import { getWishlist, toggleWishlist } from '../lib/store'
 
 const MOODS = ['Chill', 'Intense', 'Social', 'Story-Rich', 'Explore', 'Quick Play']
@@ -14,7 +15,7 @@ const MOOD_GENRE = {
   'Quick Play': 'arcade,indie',
 }
 
-export function Discover({ specs, onOpenGame, showToast }) {
+export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -74,6 +75,10 @@ export function Discover({ specs, onOpenGame, showToast }) {
       {loading && <p className="discover__status">Loading games…</p>}
       {error && <p className="discover__status discover__status--error">{error}</p>}
 
+      {specs && ranked.length > 0 && (
+        <AIInsights specs={specs} ranked={ranked} aiData={aiData} onAiData={onAiData} showToast={showToast} />
+      )}
+
       <div className="game-grid">
         {filtered.map(({ game, score }) => (
           <GameCard
@@ -83,6 +88,7 @@ export function Discover({ specs, onOpenGame, showToast }) {
             onOpen={onOpenGame}
             onToggleWishlist={handleToggleWishlist}
             isWishlisted={wishlist.includes(game.id)}
+            hiddenGem={aiData?.games?.[game.id]?.hiddenGem}
           />
         ))}
       </div>

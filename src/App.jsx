@@ -24,6 +24,7 @@ export default function App() {
   const [tab, setTab] = useState('discover')
   const [openGame, setOpenGame] = useState(null)
   const [theme, setTheme] = useState(prefs.theme)
+  const [aiData, setAiData] = useState(null)
   const { toasts, showToast, dismissToast } = useToast()
 
   function handleOnboardingComplete(newSpecs) {
@@ -63,7 +64,9 @@ export default function App() {
       <SpecPanel specs={specs} onChange={handleSpecsChange} />
 
       <main className="app__main">
-        {tab === 'discover' && <Discover specs={specs} onOpenGame={setOpenGame} showToast={showToast} />}
+        {tab === 'discover' && (
+          <Discover specs={specs} onOpenGame={setOpenGame} showToast={showToast} aiData={aiData} onAiData={setAiData} />
+        )}
         {tab === 'library' && <Library onOpenGame={setOpenGame} />}
         {tab === 'wishlist' && <Wishlist onOpenGame={setOpenGame} />}
         {tab === 'compare' && <Compare specs={specs} />}
@@ -72,6 +75,7 @@ export default function App() {
       <GameDetailModal
         game={openGame}
         score={openGame ? scoreGameForSpecs(openGame, specs) : null}
+        aiInfo={openGame ? aiData?.games?.[openGame.id] : null}
         onClose={() => setOpenGame(null)}
       />
 

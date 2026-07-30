@@ -134,6 +134,17 @@ h1, h2, h3 { font-family: 'Rajdhani', sans-serif; letter-spacing: 0.02em; }
 .tier-badge--smooth { background: var(--smooth); }
 .tier-badge--playable { background: var(--playable); }
 .tier-badge--poor { background: var(--poor); }
+.tier-badge--gem { background: var(--accent); color: var(--accent-contrast); }
+.tier-badge--gem-corner { position: absolute; bottom: 0.5rem; left: 0.5rem; top: auto; right: auto; }
+
+.ai-insights { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+.ai-insights--empty { text-align: center; }
+.ai-insights__summary { font-size: 1rem; margin: 0 0 0.75rem; }
+.ai-insights__upgrades { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+.ai-insights__upgrade { display: flex; gap: 0.75rem; font-size: 0.9rem; }
+.ai-insights__budget { text-transform: uppercase; font-size: 0.7rem; color: var(--accent); font-weight: 700; min-width: 4rem; }
+
+.modal__ai-explanation { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.9rem; line-height: 1.5; }
 
 .game-card__body { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .game-card__title { margin: 0; font-size: 1.05rem; cursor: pointer; }

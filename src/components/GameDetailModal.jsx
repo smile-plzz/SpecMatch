@@ -2,7 +2,7 @@ import { getLibrary, setLibraryStatus } from '../lib/store'
 
 const TIER_LABEL = { smooth: 'Runs Smoothly', playable: 'Playable', poor: 'Not Recommended' }
 
-export function GameDetailModal({ game, score, onClose }) {
+export function GameDetailModal({ game, score, aiInfo, onClose }) {
   if (!game) return null
   const library = getLibrary()
   const status = library[game.id]
@@ -33,6 +33,13 @@ export function GameDetailModal({ game, score, onClose }) {
               <tr><td>Suggested CPU tier</td><td>{score.requiredCpuTier}</td></tr>
             </tbody>
           </table>
+        )}
+
+        {aiInfo && (
+          <p className="modal__ai-explanation">
+            {aiInfo.hiddenGem && <span className="tier-badge tier-badge--gem">Hidden Gem</span>}
+            {aiInfo.explanation}
+          </p>
         )}
 
         <div className="modal__actions">

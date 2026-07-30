@@ -1,6 +1,6 @@
 const TIER_LABEL = { smooth: 'Runs Smoothly', playable: 'Playable', poor: 'Not Recommended' }
 
-export function GameCard({ game, score, onOpen, onToggleWishlist, isWishlisted }) {
+export function GameCard({ game, score, onOpen, onToggleWishlist, isWishlisted, hiddenGem }) {
   return (
     <div className={`game-card game-card--${score?.tier ?? 'unknown'}`}>
       <button className="game-card__image" onClick={() => onOpen(game)}>
@@ -10,6 +10,7 @@ export function GameCard({ game, score, onOpen, onToggleWishlist, isWishlisted }
           <div className="game-card__image-fallback" />
         )}
         {score && <span className={`tier-badge tier-badge--${score.tier}`}>{TIER_LABEL[score.tier]}</span>}
+        {hiddenGem && <span className="tier-badge tier-badge--gem tier-badge--gem-corner">Hidden Gem</span>}
       </button>
 
       <div className="game-card__body">
