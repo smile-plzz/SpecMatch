@@ -22,7 +22,7 @@ const SORTS = {
   newest: { label: 'Newest', fn: (a, b) => new Date(b.game.released ?? 0) - new Date(a.game.released ?? 0) },
 }
 
-export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
+export function Discover({ specs, onOpenGame, showToast, aiData, onAiData, onGamesChange }) {
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -55,6 +55,10 @@ export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
       })
       .finally(() => setLoading(false))
   }, [mood, genre])
+
+  useEffect(() => {
+    onGamesChange?.(games)
+  }, [games])
 
   const ranked = useMemo(() => {
     if (!specs) return games.map((game) => ({ game, score: null }))

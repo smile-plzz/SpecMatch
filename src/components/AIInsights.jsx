@@ -29,6 +29,12 @@ export function AIInsights({ specs, ranked, aiData, onAiData, showToast }) {
   return (
     <div className="ai-insights">
       <p className="ai-insights__summary">{aiData.profileSummary}</p>
+      {aiData.overallBottleneck && (
+        <p className="ai-insights__bottleneck">
+          <span className="ai-chip">Overall bottleneck: {aiData.overallBottleneck.component}</span>{' '}
+          {aiData.overallBottleneck.reasoning}
+        </p>
+      )}
       {aiData.upgradeSuggestions?.length > 0 && (
         <div className="ai-insights__upgrades">
           {aiData.upgradeSuggestions.map((u) => (

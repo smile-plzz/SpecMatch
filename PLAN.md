@@ -115,6 +115,41 @@ plan — the Phase 0-5 plan above is preserved in this file's history).
   spec-match-ten.vercel.app, since no local `.env` key exists for dev-server
   testing.
 
+- [x] **Phase 7 — AI recommendation engine**: rewrote `api/recommend.js`'s
+  Mistral system prompt to forbid contradicting the deterministic tier/FPS,
+  require every explanation to cite a literal hardware token (with a banned-
+  filler-phrase list and bad/good example pair), add per-game bottleneck
+  (GPU/CPU/RAM/Storage/balanced, grounded in `scoring.js`'s now-exposed
+  `gpuDelta`/`cpuDelta`), `recommendedSettings` + rationale, `similarGameIds`
+  (grounded to only ids from the sent candidate list), `confidence` (forced
+  low when specs are browser-estimated), and a profile-level
+  `overallBottleneck`. Payload stays cheap per the Enhancement Round's
+  guardrail — only list-endpoint-free fields (rating/metacritic/esrbRating/
+  playtime) plus the full score object, never per-candidate detail fetches.
+  Hardening: `AbortController` (8s) around the Mistral call so a hang fails
+  clean instead of riding Vercel's platform timeout; explicit `max_tokens`
+  (2500); server-side validation of Mistral's returned JSON shape (games ids
+  are a subset of candidates sent, all enums valid, similarGameIds grounded)
+  — a malformed response now gets a clean 502 instead of being forwarded to
+  the client as-is; stopped echoing Mistral's raw error text to the client
+  (logged server-side only). `MAX_BODY_BYTES` bumped 32KB→48KB for the larger
+  payload. `src/lib/mistral.js` forwards the new cheap fields; `AIInsights.jsx`
+  renders `overallBottleneck`; `GameDetailModal.jsx` renders bottleneck/
+  settings/confidence chips and a similar-games row (resolved against a
+  `catalog` map lifted from `Discover.jsx` up through `App.jsx` — no new
+  fetch, per the guardrail).
+  Verified: scripted 15 assertions against the handler with a mocked
+  `fetch` — all pre-existing 405/400 validation paths still correct; a
+  well-formed mocked Mistral response passes through; four distinct
+  malformed-response shapes (bad enum, id not in candidate list, wrong
+  upgradeSuggestions count, ungrounded similarGameIds) are all rejected with
+  a clean 502 and none of the malformed content leaks into the client-facing
+  error; upstream HTTP failure no longer leaks raw error text; the abort
+  timeout fires at ~8s (measured 8003ms) rather than riding a slower/longer
+  upstream hang. `npm run build` clean. Live prompt-quality confirmation
+  (does the AI actually write specific, non-generic text) pending post-push
+  spot-check against spec-match-ten.vercel.app.
+
 ## Known gaps / needs from user
 
 - No local `.env` with a real `VITE_RAWG_KEY` — local dev-server testing of

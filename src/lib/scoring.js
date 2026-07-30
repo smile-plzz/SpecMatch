@@ -69,6 +69,8 @@ export function scoreGameForSpecs(game, specs) {
     requiredGpuTier,
     requiredCpuTier,
     ramOk,
+    gpuDelta,
+    cpuDelta,
   }
 }
 

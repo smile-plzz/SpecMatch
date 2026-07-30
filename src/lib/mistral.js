@@ -9,6 +9,10 @@ export async function getAiRecommendations(specs, rankedCandidates) {
     genres: game.genres,
     tags: game.tags,
     released: game.released,
+    rating: game.rating,
+    metacritic: game.metacritic,
+    esrbRating: game.esrbRating,
+    playtime: game.playtime,
     score,
   }))
 

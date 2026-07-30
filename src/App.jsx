@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Onboarding } from './components/Onboarding'
 import { GameDetailModal } from './components/GameDetailModal'
 import { SpecPanel } from './components/SpecPanel'
@@ -25,7 +25,13 @@ export default function App() {
   const [openGame, setOpenGame] = useState(null)
   const [theme, setTheme] = useState(prefs.theme)
   const [aiData, setAiData] = useState(null)
+  const [discoverGames, setDiscoverGames] = useState([])
   const { toasts, showToast, dismissToast } = useToast()
+
+  const catalogById = useMemo(
+    () => Object.fromEntries(discoverGames.map((g) => [g.id, g])),
+    [discoverGames]
+  )
 
   function handleOnboardingComplete(newSpecs) {
     setSpecs(newSpecs)
@@ -65,7 +71,14 @@ export default function App() {
 
       <main className="app__main">
         {tab === 'discover' && (
-          <Discover specs={specs} onOpenGame={setOpenGame} showToast={showToast} aiData={aiData} onAiData={setAiData} />
+          <Discover
+            specs={specs}
+            onOpenGame={setOpenGame}
+            showToast={showToast}
+            aiData={aiData}
+            onAiData={setAiData}
+            onGamesChange={setDiscoverGames}
+          />
         )}
         {tab === 'library' && <Library onOpenGame={setOpenGame} />}
         {tab === 'wishlist' && <Wishlist onOpenGame={setOpenGame} />}
@@ -76,6 +89,8 @@ export default function App() {
         game={openGame}
         score={openGame ? scoreGameForSpecs(openGame, specs) : null}
         aiInfo={openGame ? aiData?.games?.[openGame.id] : null}
+        catalog={catalogById}
+        onOpenSimilar={setOpenGame}
         onClose={() => setOpenGame(null)}
       />
 

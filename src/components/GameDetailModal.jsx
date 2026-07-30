@@ -4,7 +4,7 @@ import { fetchGameDetails, fetchGameScreenshots, enrichGame, rawgImage } from '.
 
 const TIER_LABEL = { smooth: 'Runs Smoothly', playable: 'Playable', poor: 'Not Recommended' }
 
-export function GameDetailModal({ game, score, aiInfo, onClose }) {
+export function GameDetailModal({ game, score, aiInfo, catalog, onOpenSimilar, onClose }) {
   const [detail, setDetail] = useState(null)
   const [screenshots, setScreenshots] = useState([])
 
@@ -79,10 +79,32 @@ export function GameDetailModal({ game, score, aiInfo, onClose }) {
         )}
 
         {aiInfo && (
-          <p className="modal__ai-explanation">
-            {aiInfo.hiddenGem && <span className="tier-badge tier-badge--gem">Hidden Gem</span>}
-            {aiInfo.explanation}
-          </p>
+          <div className="modal__ai-panel">
+            <p className="modal__ai-explanation">
+              {aiInfo.hiddenGem && <span className="tier-badge tier-badge--gem">Hidden Gem</span>}
+              {aiInfo.explanation}
+            </p>
+            <div className="modal__ai-chips">
+              <span className="ai-chip">Bottleneck: {aiInfo.bottleneck}</span>
+              <span className="ai-chip">Settings: {aiInfo.recommendedSettings}</span>
+              <span className="ai-chip">Confidence: {aiInfo.confidence}</span>
+            </div>
+            {aiInfo.settingsRationale && <p className="modal__ai-rationale">{aiInfo.settingsRationale}</p>}
+            {aiInfo.similarGameIds?.length > 0 && (
+              <div className="modal__similar">
+                <span className="modal__similar-label">Similar picks:</span>
+                {aiInfo.similarGameIds.map((id) => {
+                  const similar = catalog?.[id]
+                  if (!similar) return null
+                  return (
+                    <button key={id} className="modal__similar-btn" onClick={() => onOpenSimilar?.(similar)}>
+                      {similar.title}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         )}
 
         <div className="modal__actions">
