@@ -11,8 +11,8 @@ export default defineConfig({
         name: 'SPECMATCH – PC Game Recommender',
         short_name: 'SPECMATCH',
         description: 'Find games that run perfectly on your PC',
-        theme_color: '#00e5ff',
-        background_color: '#0a0c10',
+        theme_color: '#16d64f',
+        background_color: '#0c0e13',
         display: 'standalone',
         icons: [
           { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' }
