@@ -27,7 +27,7 @@ so status/decisions travel with the code.
   Wishlist/Compare pages, dark/light theme. Verified: builds clean, dev server
   tested in browser (onboarding → specs → tabs all work; RAWG calls fail without
   a real `VITE_RAWG_KEY`, which is expected/correct error handling).
-- [ ] **Phase 1 — Desktop utility v1**: `utility/collect-specs.ps1` (CIM/WMI scan,
+- [x] **Phase 1 — Desktop utility v1**: `utility/collect-specs.ps1` (CIM/WMI scan,
   no PII) + `utility/build-exe.ps1` (ps2exe). Verified locally: real hardware
   scan produced correct JSON (CPU/GPU model, RAM, SSD/HDD, resolution/refresh,
   DirectX version) matching `src/lib/specs.js`'s schema exactly.
@@ -72,10 +72,55 @@ so status/decisions travel with the code.
   four bad-input cases plus the credentials-missing case, all now return the
   correct status.
 
+## Enhancement Round — Smarter AI, Richer Data, Premium UI
+
+App is live at spec-match-ten.vercel.app with real `VITE_RAWG_KEY` and
+`MISTRAL_API_KEY` configured on Vercel (confirmed working live: real RAWG
+games render, AI insights button returns real profile summary/upgrade
+suggestions/hidden-gem badges). This round makes the AI recommendations
+deeply hardware-specific, enriches game data (screenshots/description/
+developers/trailers/Metacritic), and redesigns the visual system around
+Xbox App + Discord as the primary references (user's explicit choice, not a
+blend of all named platforms). Full rationale, the two QA-caught architecture
+guardrails, and exact drafted prompt/CSS text live in
+`~/.claude/plans/vectorized-wandering-dawn.md` (overwritten with this round's
+plan — the Phase 0-5 plan above is preserved in this file's history).
+
+- [x] **Phase 6 — Data layer**: `src/lib/rawg.js`'s `enrichGame()` extended
+  with metacritic/ESRB/playtime (free on both list and detail RAWG responses)
+  plus detail-only fields (description, developers, publishers, website,
+  trailer) that come back `undefined` on list data by design; fixed a bug
+  where store names were silently dropped from `storeLinks`. Added
+  `fetchGameScreenshots()` and `rawgImage()` (crop/resize URL helper).
+  Guardrail: screenshots are fetched only from `GameDetailModal`'s own mount
+  effect, never folded into the shared `enrichGame()` path Library/Wishlist
+  also use — otherwise every saved-game page view would gain a 3rd RAWG call.
+  Cache hardening: quota errors on write now sweep expired
+  `specmatch:rawg:*` keys once and retry, instead of permanently disabling
+  caching for the rest of the session. `api/igdb.js` fallback brought to
+  parity for its `details` query type only (developers/publishers/
+  screenshots/trailer/website/metacritic), and fixed a pre-existing bug where
+  IGDB `tags` were requested but hardcoded to `[]` in `normalize()` — now
+  sourced from `keywords.name`.
+  Verified: `enrichGame()`/`rawgImage()` logic unit-tested against list- and
+  detail-shaped fixtures (14 assertions, all pass) — not importable as a live
+  module in plain Node since it reads `import.meta.env` at load time, so the
+  exact function bodies were tested directly. `api/igdb.js`'s full handler
+  tested end-to-end with a mocked `fetch` (Twitch token + IGDB response) for
+  both `popular` and `details` query types (11 assertions, all pass) —
+  confirms the tags-from-keywords fix, developer/publisher company-flag
+  splitting, metacritic scaling, and trailer/screenshot URL construction all
+  work. `npm run build` clean. Live-data confirmation (real screenshots
+  rendering, real detail fields) pending post-push spot-check against
+  spec-match-ten.vercel.app, since no local `.env` key exists for dev-server
+  testing.
+
 ## Known gaps / needs from user
 
-- No live `VITE_RAWG_KEY` or Mistral API key yet — code paths are built and
-  error-handle their absence correctly, but end-to-end live-data testing needs
-  real keys.
+- No local `.env` with a real `VITE_RAWG_KEY` — local dev-server testing of
+  RAWG-dependent UI is structural-only (build passes, logic unit-tested);
+  live confirmation happens by spot-checking the Vercel deployment after each
+  push, which does have real keys configured.
 - Every phase is committed + pushed to `main` on completion (no PR review step)
-  per explicit instruction.
+  per explicit standing instruction ("complete other phase and push
+  everytime").

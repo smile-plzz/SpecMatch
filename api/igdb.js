@@ -28,32 +28,51 @@ async function getAppToken() {
   return cachedToken.accessToken
 }
 
-const FIELDS = 'name,cover.url,rating,first_release_date,genres.name,tags,platforms.name,url'
+const FIELDS_LIST = 'name,cover.url,rating,first_release_date,genres.name,keywords.name,platforms.name,url'
+// Detail-only fields, kept off the list/search queries to keep those fast/cheap:
+const FIELDS_DETAIL =
+  FIELDS_LIST +
+  ',summary,involved_companies.company.name,involved_companies.developer,involved_companies.publisher,' +
+  'screenshots.url,videos.video_id,websites.url,aggregated_rating'
 
 function buildQuery({ type, genre, search, id }) {
   switch (type) {
     case 'popular':
-      return `fields ${FIELDS}; where rating != null${genre ? ` & genres.slug = "${genre}"` : ''}; sort rating desc; limit 40;`
+      return `fields ${FIELDS_LIST}; where rating != null${genre ? ` & genres.slug = "${genre}"` : ''}; sort rating desc; limit 40;`
     case 'search':
-      return `fields ${FIELDS}; search "${search}"; limit 20;`
+      return `fields ${FIELDS_LIST}; search "${search}"; limit 20;`
     case 'details':
-      return `fields ${FIELDS}; where id = ${Number(id)};`
+      return `fields ${FIELDS_DETAIL}; where id = ${Number(id)};`
     default:
       throw new Error('Invalid request type')
   }
 }
 
-function normalize(igdbGame) {
-  return {
+function normalize(igdbGame, { detail = false } = {}) {
+  const companies = igdbGame.involved_companies || []
+  const base = {
     id: igdbGame.id,
     title: igdbGame.name,
     background: igdbGame.cover?.url ? `https:${igdbGame.cover.url.replace('t_thumb', 't_1080p')}` : null,
     rating: igdbGame.rating != null ? Math.round(igdbGame.rating) / 20 : null, // IGDB is 0-100, normalize to RAWG's 0-5
     released: igdbGame.first_release_date ? new Date(igdbGame.first_release_date * 1000).toISOString().slice(0, 10) : null,
     genres: (igdbGame.genres || []).map((g) => g.name),
-    tags: [],
+    tags: (igdbGame.keywords || []).slice(0, 6).map((k) => k.name),
     platforms: (igdbGame.platforms || []).map((p) => p.name),
-    storeLinks: igdbGame.url ? [igdbGame.url] : [],
+    storeLinks: igdbGame.url ? [{ url: igdbGame.url, name: 'IGDB' }] : [],
+  }
+  if (!detail) return base
+  return {
+    ...base,
+    description: igdbGame.summary ?? null,
+    developers: companies.filter((c) => c.developer).map((c) => c.company?.name).filter(Boolean),
+    publishers: companies.filter((c) => c.publisher).map((c) => c.company?.name).filter(Boolean),
+    metacritic: igdbGame.aggregated_rating != null ? Math.round(igdbGame.aggregated_rating) : null,
+    website: igdbGame.websites?.[0]?.url ?? null,
+    trailer: igdbGame.videos?.[0]
+      ? { url: `https://www.youtube.com/watch?v=${igdbGame.videos[0].video_id}`, poster: null }
+      : undefined,
+    screenshots: (igdbGame.screenshots || []).map((s) => `https:${s.url.replace('t_thumb', 't_screenshot_big')}`),
   }
 }
 
@@ -108,7 +127,7 @@ export default async function handler(req, res) {
     }
 
     const games = await igdbRes.json()
-    res.status(200).json({ results: games.map(normalize) })
+    res.status(200).json({ results: games.map((g) => normalize(g, { detail: type === 'details' })) })
   } catch (err) {
     res.status(502).json({ error: 'IGDB call failed', detail: err.message })
   }
