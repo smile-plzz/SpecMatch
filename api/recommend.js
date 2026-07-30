@@ -5,9 +5,12 @@
 // call is a deliberate architecture choice: cheap, fast, fits well inside
 // Vercel Hobby's 10s function timeout (see PLAN.md).
 
+import { checkRateLimit, getClientIp } from '../src/lib/rateLimit.js'
+
 const MISTRAL_URL = 'https://api.mistral.ai/v1/chat/completions'
 const MAX_CANDIDATES = 15
 const MAX_BODY_BYTES = 32 * 1024
+const RATE_LIMIT = { limit: 10, windowMs: 10 * 60 * 1000 } // 10 Mistral calls / 10 min / IP
 
 const ALLOWED_SPEC_KEYS = ['source', 'collectedAt', 'os', 'cpu', 'gpu', 'ramGB', 'storage', 'display', 'directx']
 const TIERS = ['smooth', 'playable', 'poor']
@@ -74,6 +77,13 @@ function buildPrompt(specs, candidates) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' })
+    return
+  }
+
+  const ip = getClientIp(req)
+  const rate = checkRateLimit(`recommend:${ip}`, RATE_LIMIT)
+  if (!rate.allowed) {
+    res.status(429).json({ error: 'Too many AI requests — try again in a few minutes' })
     return
   }
 

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { fetchPopularGames, fetchGenres, enrichGame } from '../lib/rawg'
+import { fetchPopularGamesIgdb } from '../lib/igdb'
 import { scoreAndRankGames } from '../lib/scoring'
 import { GameCard } from '../components/GameCard'
 import { AIInsights } from '../components/AIInsights'
@@ -39,11 +40,18 @@ export function Discover({ specs, onOpenGame, showToast, aiData, onAiData }) {
   useEffect(() => {
     setLoading(true)
     setError(null)
-    fetchPopularGames({ genres: mood ? MOOD_GENRE[mood] : genre || undefined })
+    const genreFilter = mood ? MOOD_GENRE[mood] : genre || undefined
+    fetchPopularGames({ genres: genreFilter })
       .then((data) => setGames((data.results || []).map(enrichGame)))
-      .catch((err) => {
-        setError(err.message)
-        showToast?.('Could not load games — check your RAWG API key', 'error')
+      .catch(async (rawgErr) => {
+        try {
+          const data = await fetchPopularGamesIgdb({ genre: genreFilter })
+          setGames(data.results || [])
+          showToast?.('RAWG unavailable — showing IGDB results instead', 'info')
+        } catch {
+          setError(rawgErr.message)
+          showToast?.('Could not load games — check your RAWG API key', 'error')
+        }
       })
       .finally(() => setLoading(false))
   }, [mood, genre])

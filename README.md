@@ -89,6 +89,15 @@ The free RAWG tier gives 500,000 requests/month — more than enough.
 `api/recommend.js` is the only thing that calls Mistral, and it's the only
 place the key lives.
 
+### IGDB (optional — fallback game-data source, server-side only)
+Used only if RAWG errors or returns nothing. Register a Twitch app at
+https://dev.twitch.tv/console/apps (free, self-serve, no approval wait) and
+set `IGDB_CLIENT_ID` / `IGDB_CLIENT_SECRET` as server-side environment
+variables — same rule as Mistral's key, never `VITE_`-prefixed.
+`api/igdb.js` is the only thing that talks to Twitch/IGDB; it only accepts
+three fixed request shapes (popular/search/details), not arbitrary queries,
+so it can't be used as an open proxy for our credentials.
+
 ---
 
 ## Deploy to Vercel
@@ -107,6 +116,7 @@ vercel
 4. Under **Environment Variables**, add:
    - `VITE_RAWG_KEY` = your RAWG key
    - `MISTRAL_API_KEY` = your Mistral key (optional, server-side only)
+   - `IGDB_CLIENT_ID` / `IGDB_CLIENT_SECRET` = your Twitch app credentials (optional, server-side only)
 5. Click **Deploy**
 
 Vercel auto-detects Vite and sets `npm run build` + `dist/` automatically, and
@@ -119,7 +129,8 @@ picks up `api/recommend.js` as a serverless function.
 ```
 specmatch/
 ├── api/
-│   └── recommend.js              # Single Mistral call — server-side only
+│   ├── recommend.js              # Single Mistral call — server-side only
+│   └── igdb.js                   # IGDB proxy (fallback game data) — server-side only
 ├── public/
 │   └── favicon.svg
 ├── src/
@@ -134,7 +145,9 @@ specmatch/
 │   ├── hooks/
 │   │   └── useToast.js           # Toast state hook
 │   ├── lib/
+│   │   ├── igdb.js                # Client for /api/igdb (fallback game data)
 │   │   ├── mistral.js            # Client for /api/recommend
+│   │   ├── rateLimit.js          # Shared in-memory rate limiter for api/*.js
 │   │   ├── rawg.js               # RAWG API + caching + game enrichment
 │   │   ├── scoring.js            # Deterministic compatibility/FPS scoring
 │   │   ├── specs.js              # Hardware schema, browser detect, report parsing
@@ -187,8 +200,6 @@ never override them.
 See `PLAN.md` for the actively-tracked phase plan. Longer-term ideas not yet
 scheduled:
 
-- [ ] Rate-limit `/api/recommend` to bound Mistral spend
-- [ ] IGDB as a fallback/secondary game-data API
 - [ ] Steam library import via Steam Web API
 - [ ] macOS/Linux scan utility (Rust rewrite of the same JSON schema)
 - [ ] User auth (Supabase or Firebase) for cloud-synced library

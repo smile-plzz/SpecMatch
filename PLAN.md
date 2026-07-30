@@ -55,8 +55,22 @@ so status/decisions travel with the code.
   and Phase 3's AI insights/hidden-gem badges. Verified: dropdowns render and
   don't crash without live RAWG data; deeper "does this look good with real
   content" pass still needs a live `VITE_RAWG_KEY`.
-- [ ] **Phase 5 — Hardening & scale-out**: rate-limiting `/api/recommend`, IGDB
-  fallback, macOS/Linux utility ports (deferred, not MVP).
+- [x] **Phase 5 — Hardening & scale-out**: `src/lib/rateLimit.js` (best-effort
+  in-memory per-IP limiter — bounds a single warm instance only, not a hard
+  guarantee across Vercel's multiple instances; upgrade to Upstash Redis if
+  usage ever demands it) applied to both `api/recommend.js` (10 calls/10min/IP)
+  and the new `api/igdb.js` (30/min/IP, fallback game-data proxy — only 3 fixed
+  request shapes accepted, no raw query passthrough, so it can't be used as an
+  open proxy for our IGDB credentials). macOS/Linux utility ports remain
+  deferred, not MVP, per the original plan.
+  Verified: scripted 11 calls against `api/recommend.js` — first 10 pass
+  through to the (missing, expected) API-key check, 11th correctly 429s.
+  `api/igdb.js` validation order bug found and fixed during this pass: it was
+  checking IGDB credentials *before* validating the request body, so a
+  malformed request with missing credentials always reported the credentials
+  error and masked real 400s. Fixed by validating input first; re-tested all
+  four bad-input cases plus the credentials-missing case, all now return the
+  correct status.
 
 ## Known gaps / needs from user
 
