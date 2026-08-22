@@ -16,8 +16,24 @@ Usage:
 $ErrorActionPreference = 'SilentlyContinue'
 
 function Get-DirectXVersion {
+    # dxdiag /t can hang indefinitely on some machines (first-run WHQL driver
+    # check, or rendering its window even with -WindowStyle Hidden), which
+    # blocked -Wait forever and made the whole script look stuck. Poll with a
+    # hard timeout and kill it instead of blocking on it.
     $tmp = Join-Path $env:TEMP "specmatch-dxdiag.txt"
-    Start-Process -FilePath "dxdiag.exe" -ArgumentList "/t `"$tmp`"" -Wait -WindowStyle Hidden
+    Remove-Item $tmp -ErrorAction SilentlyContinue
+    try {
+        $proc = Start-Process -FilePath "dxdiag.exe" -ArgumentList "/t `"$tmp`" /whql:off" -WindowStyle Hidden -PassThru
+        $waited = 0
+        while (-not $proc.HasExited -and $waited -lt 15) {
+            Start-Sleep -Seconds 1
+            $waited++
+        }
+        if (-not $proc.HasExited) {
+            Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+        }
+    } catch {}
+
     if (Test-Path $tmp) {
         $line = Select-String -Path $tmp -Pattern "DirectX Version:" | Select-Object -First 1
         Remove-Item $tmp -ErrorAction SilentlyContinue
