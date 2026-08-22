@@ -3,7 +3,9 @@ import { evaluateCompatibility } from '../lib/compatibility'
 import { ScoreRing } from '../components/ScoreRing'
 import { VerdictBadge } from '../components/VerdictBadge'
 import { CompatibilityTable } from '../components/CompatibilityTable'
-import { IconWarning } from '../components/Icons'
+import { useGameArt } from '../lib/useGameArt'
+import { rawgThumb } from '../lib/rawg'
+import { IconGamepad, IconWarning } from '../components/Icons'
 
 // The core screen (DESIGN_HANDOFF.md §3.6). Content order is locked:
 // verdict badge -> score ring -> bottleneck -> table -> settings band ->
@@ -25,12 +27,18 @@ export function CompatibilityResult({ gameId, specs, onBack, onCompareMyPC }) {
 
   const noProfile = !specs
   const result = specs ? evaluateCompatibility(specs, game) : null
+  const { background } = useGameArt(game.title)
 
   return (
     <div className="result-screen">
       <button className="btn btn--ghost btn--sm" style={{ alignSelf: 'flex-start' }} onClick={onBack}>← Back to search</button>
 
       <div className="result-head">
+        {background ? (
+          <img className="result-head__art" src={rawgThumb(background)} alt="" />
+        ) : (
+          <div className="result-head__art result-head__art--fallback"><IconGamepad size={28} /></div>
+        )}
         <div className="result-head__info">
           <h2>{game.title}</h2>
           <div className="result-head__meta">{game.releaseYear} · {game.platform.join(', ')}</div>

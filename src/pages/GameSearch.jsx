@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react'
 import GAMES from '../data/games.json'
 import { evaluateCompatibility } from '../lib/compatibility'
 import { VerdictDot } from '../components/VerdictBadge'
-import { IconSearch } from '../components/Icons'
+import { useGameArt } from '../lib/useGameArt'
+import { rawgThumb } from '../lib/rawg'
+import { IconGamepad, IconSearch } from '../components/Icons'
 
 // Search-first, curated dataset only — no live RAWG/IGDB call in this flow
 // (DESIGN_HANDOFF.md §11, LOCKED). The verdict dot is deliberately
@@ -41,14 +43,7 @@ export function GameSearch({ specs, onSelect }) {
       {results.length > 0 ? (
         <div className="search-results">
           {results.map(({ game, verdict }) => (
-            <button key={game.id} className="search-result-row" onClick={() => onSelect(game.id)}>
-              {verdict && <VerdictDot verdict={verdict} />}
-              <div>
-                <div className="search-result-row__title">{game.title}</div>
-                <div className="search-result-row__meta">{game.releaseYear} · {game.platform.join(', ')}</div>
-              </div>
-              <span className="search-result-row__arrow">→</span>
-            </button>
+            <SearchResultRow key={game.id} game={game} verdict={verdict} onSelect={onSelect} />
           ))}
         </div>
       ) : (
@@ -59,5 +54,24 @@ export function GameSearch({ specs, onSelect }) {
         </div>
       )}
     </div>
+  )
+}
+
+function SearchResultRow({ game, verdict, onSelect }) {
+  const { background } = useGameArt(game.title)
+  return (
+    <button className="search-result-row" onClick={() => onSelect(game.id)}>
+      {background ? (
+        <img className="search-result-row__art" src={rawgThumb(background)} alt="" loading="lazy" />
+      ) : (
+        <div className="search-result-row__art search-result-row__art--fallback"><IconGamepad size={18} /></div>
+      )}
+      {verdict && <VerdictDot verdict={verdict} />}
+      <div>
+        <div className="search-result-row__title">{game.title}</div>
+        <div className="search-result-row__meta">{game.releaseYear} · {game.platform.join(', ')}</div>
+      </div>
+      <span className="search-result-row__arrow">→</span>
+    </button>
   )
 }
