@@ -1,0 +1,90 @@
+[
+  {
+    "id": "baldurs-gate-3",
+    "title": "Baldur's Gate 3",
+    "platform": ["Windows"],
+    "releaseYear": 2023,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-4690 / Ryzen 5 1600", "gpu": "GTX 970 / RX 480", "vramGB": 4, "ramGB": 8, "storageGB": 150, "directx": "11" },
+      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-8700K / Ryzen 5 3600", "gpu": "RTX 2060 / RX 5700 XT", "vramGB": 6, "ramGB": 16, "storageGB": 150, "directx": "11" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1086940/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "alan-wake-2",
+    "title": "Alan Wake 2",
+    "platform": ["Windows"],
+    "releaseYear": 2023,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-7600K / Ryzen 5 1600", "gpu": "RTX 2060 / RX 5700", "vramGB": 6, "ramGB": 16, "storageGB": 90, "directx": "12" },
+      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-9700K / Ryzen 7 3700X", "gpu": "RTX 3070 / RX 6800 XT", "vramGB": 8, "ramGB": 16, "storageGB": 90, "directx": "12" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1911540/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "starfield",
+    "title": "Starfield",
+    "platform": ["Windows"],
+    "releaseYear": 2023,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-10600K / Ryzen 5 2600X", "gpu": "GTX 1070 Ti / RX 5700", "vramGB": 8, "ramGB": 16, "storageGB": 125, "directx": "12" },
+      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i5-11600K / Ryzen 5 5600X", "gpu": "RTX 2080 / RX 6800 XT", "vramGB": 8, "ramGB": 16, "storageGB": 125, "directx": "12" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1716740/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "cyberpunk-2077",
+    "title": "Cyberpunk 2077",
+    "platform": ["Windows"],
+    "releaseYear": 2020,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i7-6700 / Ryzen 5 1600", "gpu": "GTX 1060 / RX 580", "vramGB": 6, "ramGB": 8, "storageGB": 70, "directx": "12" },
+      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-12700 / Ryzen 7 7800X3D", "gpu": "RTX 2060 Super / RX 5700 XT", "vramGB": 8, "ramGB": 16, "storageGB": 70, "directx": "12" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1091500/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "elden-ring",
+    "title": "Elden Ring",
+    "platform": ["Windows"],
+    "releaseYear": 2022,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-8400 / Ryzen 3 3300X", "gpu": "GTX 1060 / RX 580", "vramGB": 3, "ramGB": 12, "storageGB": 60, "directx": "12" },
+      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i7-8700K / Ryzen 5 3600X", "gpu": "GTX 1070 / RX 5700 XT", "vramGB": 8, "ramGB": 16, "storageGB": 60, "directx": "12" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1245620/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "hades-2",
+    "title": "Hades II",
+    "platform": ["Windows"],
+    "releaseYear": 2024,
+    "requirements": {
+      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-7400 / Ryzen 3 1200", "gpu": "GTX 970 / RX 570", "vramGB": 4, "ramGB": 8, "storageGB": 20, "directx": "11" },
+      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i5-9400 / Ryzen 5 2600", "gpu": "GTX 1660 / RX 590", "vramGB": 6, "ramGB": 16, "storageGB": 20, "directx": "11" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1145350/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "stardew-valley",
+    "title": "Stardew Valley",
+    "platform": ["Windows"],
+    "releaseYear": 2016,
+    "requirements": {
+      "minimum": { "os": "Windows 7 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "Intel UHD 620", "vramGB": 1, "ramGB": 2, "storageGB": 1, "directx": "10" },
+      "recommended": { "os": "Windows 10 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "GTX 1050", "vramGB": 2, "ramGB": 4, "storageGB": 1, "directx": "10" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/413150/", "retrievedAt": "2026-08-01" }
+  },
+  {
+    "id": "portal-2",
+    "title": "Portal 2",
+    "platform": ["Windows"],
+    "releaseYear": 2011,
+    "requirements": {
+      "minimum": { "os": "Windows 7 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "Intel HD", "vramGB": 1, "ramGB": 2, "storageGB": 8, "directx": "9" },
+      "recommended": { "os": "Windows 10 64-bit", "cpu": "i3-10100 / Ryzen 3 3100", "gpu": "GTX 1050", "vramGB": 2, "ramGB": 4, "storageGB": 8, "directx": "9" }
+    },
+    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/620/", "retrievedAt": "2026-08-01" }
+  }
+]

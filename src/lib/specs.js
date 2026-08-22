@@ -70,15 +70,26 @@ function guessOsName() {
 // Validates + normalizes a hardware report uploaded from the desktop utility
 // (Phase 1). Rejects unknown top-level keys and enforces size/type sanity so a
 // malformed or malicious upload can't reach the scoring/AI pipeline.
-const ALLOWED_KEYS = ['source', 'collectedAt', 'os', 'cpu', 'gpu', 'ramGB', 'storage', 'display', 'directx']
+//
+// `reportVersion` was added for the pivot (DESIGN_HANDOFF.md §9): the utility
+// itself hasn't been updated to emit it yet, so its absence is treated as v1
+// (today's shape) rather than an error — this keeps existing report.json
+// files from suddenly failing validation. Bump `CURRENT_REPORT_VERSION` and
+// branch here if a future field addition needs real migration logic.
+const CURRENT_REPORT_VERSION = '2.0'
+const ALLOWED_KEYS = ['reportVersion', 'source', 'collectedAt', 'os', 'cpu', 'gpu', 'ramGB', 'storage', 'display', 'directx']
 
 export function parseUtilityReport(json) {
   if (!json || typeof json !== 'object') throw new Error('Invalid report: not an object')
   const keys = Object.keys(json)
   const unknown = keys.filter((k) => !ALLOWED_KEYS.includes(k))
   if (unknown.length) throw new Error(`Invalid report: unexpected fields ${unknown.join(', ')}`)
+  if (json.reportVersion && json.reportVersion !== CURRENT_REPORT_VERSION && json.reportVersion !== '1.0') {
+    throw new Error(`Invalid report: unsupported reportVersion "${json.reportVersion}"`)
+  }
 
   return {
+    reportVersion: json.reportVersion || '1.0',
     source: 'utility',
     collectedAt: json.collectedAt || new Date().toISOString(),
     os: json.os || { name: null, version: null, arch: null },
@@ -97,5 +108,23 @@ export function parseUtilityReport(json) {
     storage: json.storage || { type: null, freeGB: null },
     display: json.display || { width: null, height: null, refreshHz: null },
     directx: json.directx || null,
+  }
+}
+
+// Builds the same profile shape from the manual-entry form (Upload screen's
+// "Enter manually" tab) so downstream code (compatibility engine, SpecPanel,
+// sidebar rig-card) never has to special-case how a profile was produced.
+export function buildManualSpecs({ osName, cpuModel, gpuModel, ramGB, vramGB, directx }) {
+  return {
+    reportVersion: CURRENT_REPORT_VERSION,
+    source: 'manual',
+    collectedAt: new Date().toISOString(),
+    os: { name: osName || null, version: null, arch: null },
+    cpu: { model: cpuModel || null, cores: null, threads: null, tier: guessCpuTier(null) },
+    gpu: { model: gpuModel || null, vramGB: vramGB || null, tier: guessGpuTier(gpuModel) },
+    ramGB: ramGB || null,
+    storage: { type: null, freeGB: null },
+    display: { width: null, height: null, refreshHz: null },
+    directx: directx || null,
   }
 }

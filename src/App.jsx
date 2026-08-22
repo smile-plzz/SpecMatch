@@ -1,94 +1,39 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Onboarding } from './components/Onboarding'
-import { GameDetailModal } from './components/GameDetailModal'
-import { SpecPanel } from './components/SpecPanel'
+import { useEffect, useState } from 'react'
+import { Landing } from './pages/Landing'
+import { SystemSetup } from './pages/SystemSetup'
+import { UploadReportScreen } from './pages/UploadReportScreen'
+import { SystemProfileScreen } from './pages/SystemProfileScreen'
+import { GameSearch } from './pages/GameSearch'
+import { CompatibilityResult } from './pages/CompatibilityResult'
 import { ToastContainer } from './components/Toast'
-import { Discover } from './pages/Discover'
-import { Library } from './pages/Library'
-import { Wishlist } from './pages/Wishlist'
-import { Compare } from './pages/Compare'
 import { useToast } from './hooks/useToast'
-import { getLibrary, getPrefs, getWishlist, setPrefs } from './lib/store'
-import { scoreGameForSpecs } from './lib/scoring'
-import {
-  IconCompare,
-  IconDiscover,
-  IconGamepad,
-  IconHeart,
-  IconLibrary,
-  IconMoon,
-  IconSun,
-} from './components/Icons'
+import { getPrefs, setPrefs } from './lib/store'
+import { detectBrowserSpecs } from './lib/specs'
+import { IconGamepad, IconMoon, IconSearch, IconSun } from './components/Icons'
 
-const TABS = [
-  {
-    key: 'discover',
-    label: 'Discover',
-    Icon: IconDiscover,
-    title: 'Discover',
-    subtitle: 'Ranked against your hardware, not against a generic PC.',
-  },
-  {
-    key: 'library',
-    label: 'Library',
-    Icon: IconLibrary,
-    title: 'Your library',
-    subtitle: 'Everything you have marked as played, liked, or disliked.',
-  },
-  {
-    key: 'wishlist',
-    label: 'Wishlist',
-    Icon: IconHeart,
-    title: 'Wishlist',
-    subtitle: 'Games saved for later — still scored against your rig.',
-  },
-  {
-    key: 'compare',
-    label: 'Compare',
-    Icon: IconCompare,
-    title: 'Compare',
-    subtitle: 'Put any game side by side with your PC.',
-  },
-]
+// Pivot routing (DESIGN_HANDOFF.md §4/§5): the sidebar/topbar shell mounts
+// only from Search onward. Setup/Upload/Profile are a linear step flow with
+// no persistent chrome — this replaces the old `Onboarding.jsx` modal-card
+// flow and the old always-shell App.jsx structure. No router library was
+// introduced (DESIGN_HANDOFF.md §11, FLEXIBLE) since this is a small, linear
+// state machine — local `screen` state is enough and avoids a new dependency.
+//
+// `Discover`, `Compare`, `Library`, `Wishlist` and `Onboarding` are left in
+// place, unrouted, per DESIGN_HANDOFF.md §12 ("do not delete") — the old
+// heuristic scorer (`scoring.js`) they depend on is untouched.
+const LINEAR_SCREENS = ['landing', 'setup', 'upload', 'profile']
 
 export default function App() {
   const prefs = getPrefs()
   const [specs, setSpecs] = useState(prefs.specs)
-  const [tab, setTab] = useState('discover')
-  const [openGame, setOpenGame] = useState(null)
+  const [screen, setScreen] = useState(specs ? 'search' : 'landing')
+  const [activeGameId, setActiveGameId] = useState(null)
   const [theme, setTheme] = useState(prefs.theme)
-  const [aiData, setAiData] = useState(null)
-  const [discoverGames, setDiscoverGames] = useState([])
-  const { toasts, showToast, dismissToast } = useToast()
+  const { toasts, dismissToast } = useToast()
 
-  // Theme lives on <html> as well as the app shell so overscroll, the modal
-  // overlay, and the onboarding screen all sit on the themed background.
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
-
-  const catalogById = useMemo(
-    () => Object.fromEntries(discoverGames.map((g) => [g.id, g])),
-    [discoverGames]
-  )
-
-  // Read on every render rather than mirrored in state: both are tiny
-  // localStorage reads, and it keeps the nav counts honest after a toggle
-  // anywhere in the tree without threading callbacks through every page.
-  const counts = {
-    library: Object.keys(getLibrary()).length,
-    wishlist: getWishlist().length,
-  }
-
-  function handleOnboardingComplete(newSpecs) {
-    setSpecs(newSpecs)
-    setPrefs({ specs: newSpecs })
-  }
-
-  function handleSpecsChange(newSpecs) {
-    setSpecs(newSpecs)
-    setPrefs({ specs: newSpecs })
-  }
 
   function toggleTheme() {
     const next = theme === 'dark' ? 'light' : 'dark'
@@ -96,11 +41,48 @@ export default function App() {
     setPrefs({ theme: next })
   }
 
-  if (!specs) {
-    return <Onboarding onComplete={handleOnboardingComplete} />
+  function completeUpload(newSpecs) {
+    setSpecs(newSpecs)
+    setPrefs({ specs: newSpecs })
+    setScreen('profile')
   }
 
-  const active = TABS.find((t) => t.key === tab) ?? TABS[0]
+  function useBrowserEstimate() {
+    completeUpload(detectBrowserSpecs())
+  }
+
+  function openGame(gameId) {
+    setActiveGameId(gameId)
+    setScreen('result')
+  }
+
+  if (LINEAR_SCREENS.includes(screen)) {
+    return (
+      <div className="app app--linear" data-theme={theme}>
+        <div className="linear-topbar">
+          <span className="sidebar__brand-mark"><IconGamepad size={17} /></span>
+          <span className="linear-topbar__brand">SPECMATCH</span>
+          <div className="linear-topbar__spacer" />
+          <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? <IconSun size={16} /> : <IconMoon size={16} />}
+          </button>
+        </div>
+
+        {screen === 'landing' && (
+          <Landing onCheckPC={() => setScreen('setup')} onBrowseFirst={() => setScreen('search')} />
+        )}
+        {screen === 'setup' && (
+          <SystemSetup onContinue={() => setScreen('upload')} onUseBrowserEstimate={useBrowserEstimate} />
+        )}
+        {screen === 'upload' && <UploadReportScreen onComplete={completeUpload} />}
+        {screen === 'profile' && specs && (
+          <SystemProfileScreen specs={specs} onRescan={() => setScreen('upload')} onSearch={() => setScreen('search')} />
+        )}
+
+        <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+      </div>
+    )
+  }
 
   return (
     <div className="app" data-theme={theme}>
@@ -109,48 +91,33 @@ export default function App() {
           <span className="sidebar__brand-mark"><IconGamepad size={18} /></span>
           <div>
             <h1>SPECMATCH</h1>
-            <span>Hardware-aware picks</span>
+            <span>Hardware-aware verdicts</span>
           </div>
         </div>
 
         <nav className="sidebar__nav" aria-label="Sections">
-          {TABS.map(({ key, label, Icon }) => (
-            <button
-              key={key}
-              className={tab === key ? 'nav-item nav-item--active' : 'nav-item'}
-              onClick={() => setTab(key)}
-              aria-current={tab === key ? 'page' : undefined}
-            >
-              <Icon size={18} />
-              {label}
-              {counts[key] > 0 && <span className="nav-item__badge">{counts[key]}</span>}
-            </button>
-          ))}
+          <button className="nav-item nav-item--active" onClick={() => setScreen('search')} aria-current="page">
+            <IconSearch size={18} /> Search
+          </button>
         </nav>
 
         <div className="sidebar__footer">
-          <div className="rig-card">
-            <div className="rig-card__head">
-              {specs.source === 'utility' ? 'Desktop scan' : 'Browser estimate'}
+          {specs ? (
+            <div className="rig-card">
+              <div className="rig-card__head">
+                {specs.source === 'utility' ? 'Desktop scan' : specs.source === 'manual' ? 'Manual entry' : 'Browser estimate'}
+              </div>
+              <div className="rig-card__line" title={specs.gpu?.model ?? undefined}><span>GPU</span> {specs.gpu?.model ?? 'Unknown'}</div>
+              <div className="rig-card__line" title={specs.cpu?.model ?? undefined}><span>CPU</span> {specs.cpu?.model ?? 'Unknown'}</div>
+              <div className="rig-card__line"><span>RAM</span> {specs.ramGB ? `${specs.ramGB} GB` : 'Unknown'}</div>
             </div>
-            <div className="rig-card__line" title={specs.gpu?.model ?? undefined}>
-              <span>GPU</span> {specs.gpu?.model ?? `~${specs.gpu?.tier ?? 'unknown'}`}
-            </div>
-            <div className="rig-card__line" title={specs.cpu?.model ?? undefined}>
-              <span>CPU</span> {specs.cpu?.model ?? `~${specs.cpu?.tier ?? 'unknown'}`}
-            </div>
-            <div className="rig-card__line">
-              <span>RAM</span> {specs.ramGB ? `${specs.ramGB} GB` : 'Unknown'}
-            </div>
-          </div>
+          ) : (
+            <button className="rail-badge" onClick={() => setScreen('setup')}>+ Add your PC</button>
+          )}
 
           <div className="sidebar__theme">
             <span className="sidebar__theme-label">{theme === 'dark' ? 'Dark' : 'Light'} theme</span>
-            <button
-              className="icon-btn"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            >
+            <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle theme">
               {theme === 'dark' ? <IconSun size={17} /> : <IconMoon size={17} />}
             </button>
           </div>
@@ -159,51 +126,30 @@ export default function App() {
 
       <div className="app__content">
         <header className="topbar">
-          <div className="topbar__brand">
-            <span className="sidebar__brand-mark"><IconGamepad size={17} /></span>
-          </div>
+          <div className="topbar__brand"><span className="sidebar__brand-mark"><IconGamepad size={17} /></span></div>
           <div className="topbar__titles">
-            <h2>{active.title}</h2>
-            <p>{active.subtitle}</p>
+            <h2>{screen === 'result' ? 'Compatibility' : 'Search'}</h2>
+            <p>{screen === 'result' ? 'Component-by-component, not a guess.' : 'Search-first — a small curated set of games, checked honestly.'}</p>
           </div>
           <div className="topbar__actions">
-            <button
-              className="icon-btn"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            >
+            <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle theme">
               {theme === 'dark' ? <IconSun size={17} /> : <IconMoon size={17} />}
             </button>
           </div>
         </header>
 
-        <SpecPanel specs={specs} onChange={handleSpecsChange} />
-
         <main className="app__main">
-          {tab === 'discover' && (
-            <Discover
+          {screen === 'search' && <GameSearch specs={specs} onSelect={openGame} />}
+          {screen === 'result' && (
+            <CompatibilityResult
+              gameId={activeGameId}
               specs={specs}
-              onOpenGame={setOpenGame}
-              showToast={showToast}
-              aiData={aiData}
-              onAiData={setAiData}
-              onGamesChange={setDiscoverGames}
+              onBack={() => setScreen('search')}
+              onCompareMyPC={() => setScreen('setup')}
             />
           )}
-          {tab === 'library' && <Library specs={specs} onOpenGame={setOpenGame} />}
-          {tab === 'wishlist' && <Wishlist specs={specs} onOpenGame={setOpenGame} />}
-          {tab === 'compare' && <Compare specs={specs} />}
         </main>
       </div>
-
-      <GameDetailModal
-        game={openGame}
-        score={openGame ? scoreGameForSpecs(openGame, specs) : null}
-        aiInfo={openGame ? aiData?.games?.[openGame.id] : null}
-        catalog={catalogById}
-        onOpenSimilar={setOpenGame}
-        onClose={() => setOpenGame(null)}
-      />
 
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
