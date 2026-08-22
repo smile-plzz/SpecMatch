@@ -2,89 +2,496 @@
   {
     "id": "baldurs-gate-3",
     "title": "Baldur's Gate 3",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2023,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-4690 / Ryzen 5 1600", "gpu": "GTX 970 / RX 480", "vramGB": 4, "ramGB": 8, "storageGB": 150, "directx": "11" },
-      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-8700K / Ryzen 5 3600", "gpu": "RTX 2060 / RX 5700 XT", "vramGB": 6, "ramGB": 16, "storageGB": 150, "directx": "11" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i5-4690 / Ryzen 5 1600",
+        "gpu": "GTX 970 / RX 480",
+        "vramGB": 4,
+        "ramGB": 8,
+        "storageGB": 150,
+        "directx": "11"
+      },
+      "recommended": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i7-8700K / Ryzen 5 3600",
+        "gpu": "RTX 2060 / RX 5700 XT",
+        "vramGB": 6,
+        "ramGB": 16,
+        "storageGB": 150,
+        "directx": "11"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1086940/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1086940/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "alan-wake-2",
     "title": "Alan Wake 2",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2023,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-7600K / Ryzen 5 1600", "gpu": "RTX 2060 / RX 5700", "vramGB": 6, "ramGB": 16, "storageGB": 90, "directx": "12" },
-      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-9700K / Ryzen 7 3700X", "gpu": "RTX 3070 / RX 6800 XT", "vramGB": 8, "ramGB": 16, "storageGB": 90, "directx": "12" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i5-7600K / Ryzen 5 1600",
+        "gpu": "RTX 2060 / RX 5700",
+        "vramGB": 6,
+        "ramGB": 16,
+        "storageGB": 90,
+        "directx": "12"
+      },
+      "recommended": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i7-9700K / Ryzen 7 3700X",
+        "gpu": "RTX 3070 / RX 6800 XT",
+        "vramGB": 8,
+        "ramGB": 16,
+        "storageGB": 90,
+        "directx": "12"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1911540/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1911540/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "starfield",
     "title": "Starfield",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2023,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-10600K / Ryzen 5 2600X", "gpu": "GTX 1070 Ti / RX 5700", "vramGB": 8, "ramGB": 16, "storageGB": 125, "directx": "12" },
-      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i5-11600K / Ryzen 5 5600X", "gpu": "RTX 2080 / RX 6800 XT", "vramGB": 8, "ramGB": 16, "storageGB": 125, "directx": "12" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i5-10600K / Ryzen 5 2600X",
+        "gpu": "GTX 1070 Ti / RX 5700",
+        "vramGB": 8,
+        "ramGB": 16,
+        "storageGB": 125,
+        "directx": "12"
+      },
+      "recommended": {
+        "os": "Windows 10/11 64-bit",
+        "cpu": "i5-11600K / Ryzen 5 5600X",
+        "gpu": "RTX 2080 / RX 6800 XT",
+        "vramGB": 8,
+        "ramGB": 16,
+        "storageGB": 125,
+        "directx": "12"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1716740/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1716740/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "cyberpunk-2077",
     "title": "Cyberpunk 2077",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2020,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i7-6700 / Ryzen 5 1600", "gpu": "GTX 1060 / RX 580", "vramGB": 6, "ramGB": 8, "storageGB": 70, "directx": "12" },
-      "recommended": { "os": "Windows 10 64-bit", "cpu": "i7-12700 / Ryzen 7 7800X3D", "gpu": "RTX 2060 Super / RX 5700 XT", "vramGB": 8, "ramGB": 16, "storageGB": 70, "directx": "12" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i7-6700 / Ryzen 5 1600",
+        "gpu": "GTX 1060 / RX 580",
+        "vramGB": 6,
+        "ramGB": 8,
+        "storageGB": 70,
+        "directx": "12"
+      },
+      "recommended": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i7-12700 / Ryzen 7 7800X3D",
+        "gpu": "RTX 2060 Super / RX 5700 XT",
+        "vramGB": 8,
+        "ramGB": 16,
+        "storageGB": 70,
+        "directx": "12"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1091500/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1091500/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "elden-ring",
     "title": "Elden Ring",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2022,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-8400 / Ryzen 3 3300X", "gpu": "GTX 1060 / RX 580", "vramGB": 3, "ramGB": 12, "storageGB": 60, "directx": "12" },
-      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i7-8700K / Ryzen 5 3600X", "gpu": "GTX 1070 / RX 5700 XT", "vramGB": 8, "ramGB": 16, "storageGB": 60, "directx": "12" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i5-8400 / Ryzen 3 3300X",
+        "gpu": "GTX 1060 / RX 580",
+        "vramGB": 3,
+        "ramGB": 12,
+        "storageGB": 60,
+        "directx": "12"
+      },
+      "recommended": {
+        "os": "Windows 10/11 64-bit",
+        "cpu": "i7-8700K / Ryzen 5 3600X",
+        "gpu": "GTX 1070 / RX 5700 XT",
+        "vramGB": 8,
+        "ramGB": 16,
+        "storageGB": 60,
+        "directx": "12"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1245620/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1245620/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "hades-2",
     "title": "Hades II",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2024,
     "requirements": {
-      "minimum": { "os": "Windows 10 64-bit", "cpu": "i5-7400 / Ryzen 3 1200", "gpu": "GTX 970 / RX 570", "vramGB": 4, "ramGB": 8, "storageGB": 20, "directx": "11" },
-      "recommended": { "os": "Windows 10/11 64-bit", "cpu": "i5-9400 / Ryzen 5 2600", "gpu": "GTX 1660 / RX 590", "vramGB": 6, "ramGB": 16, "storageGB": 20, "directx": "11" }
+      "minimum": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i5-7400 / Ryzen 3 1200",
+        "gpu": "GTX 970 / RX 570",
+        "vramGB": 4,
+        "ramGB": 8,
+        "storageGB": 20,
+        "directx": "11"
+      },
+      "recommended": {
+        "os": "Windows 10/11 64-bit",
+        "cpu": "i5-9400 / Ryzen 5 2600",
+        "gpu": "GTX 1660 / RX 590",
+        "vramGB": 6,
+        "ramGB": 16,
+        "storageGB": 20,
+        "directx": "11"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/1145350/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1145350/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "stardew-valley",
     "title": "Stardew Valley",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2016,
     "requirements": {
-      "minimum": { "os": "Windows 7 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "Intel UHD 620", "vramGB": 1, "ramGB": 2, "storageGB": 1, "directx": "10" },
-      "recommended": { "os": "Windows 10 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "GTX 1050", "vramGB": 2, "ramGB": 4, "storageGB": 1, "directx": "10" }
+      "minimum": {
+        "os": "Windows 7 64-bit",
+        "cpu": "i3-8100 / Ryzen 3 1200",
+        "gpu": "Intel UHD 620",
+        "vramGB": 1,
+        "ramGB": 2,
+        "storageGB": 1,
+        "directx": "10"
+      },
+      "recommended": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i3-8100 / Ryzen 3 1200",
+        "gpu": "GTX 1050",
+        "vramGB": 2,
+        "ramGB": 4,
+        "storageGB": 1,
+        "directx": "10"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/413150/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/413150/",
+      "retrievedAt": "2026-08-01"
+    }
   },
   {
     "id": "portal-2",
     "title": "Portal 2",
-    "platform": ["Windows"],
+    "platform": [
+      "Windows"
+    ],
     "releaseYear": 2011,
     "requirements": {
-      "minimum": { "os": "Windows 7 64-bit", "cpu": "i3-8100 / Ryzen 3 1200", "gpu": "Intel HD", "vramGB": 1, "ramGB": 2, "storageGB": 8, "directx": "9" },
-      "recommended": { "os": "Windows 10 64-bit", "cpu": "i3-10100 / Ryzen 3 3100", "gpu": "GTX 1050", "vramGB": 2, "ramGB": 4, "storageGB": 8, "directx": "9" }
+      "minimum": {
+        "os": "Windows 7 64-bit",
+        "cpu": "i3-8100 / Ryzen 3 1200",
+        "gpu": "Intel HD",
+        "vramGB": 1,
+        "ramGB": 2,
+        "storageGB": 8,
+        "directx": "9"
+      },
+      "recommended": {
+        "os": "Windows 10 64-bit",
+        "cpu": "i3-10100 / Ryzen 3 3100",
+        "gpu": "GTX 1050",
+        "vramGB": 2,
+        "ramGB": 4,
+        "storageGB": 8,
+        "directx": "9"
+      }
     },
-    "source": { "name": "Steam store page", "url": "https://store.steampowered.com/app/620/", "retrievedAt": "2026-08-01" }
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/620/",
+      "retrievedAt": "2026-08-01"
+    }
+  },
+  {
+    "id": "hollow-knight",
+    "title": "Hollow Knight",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2017,
+    "requirements": {
+      "minimum": {
+        "os": "Windows 10 version 21H1 (build 19043) or newer",
+        "cpu": "Intel Core i3-3240, AMD FX-4300",
+        "gpu": "GeForce GTX 560 Ti (1GB), Radeon HD 7750 (1GB)",
+        "vramGB": 1,
+        "ramGB": 4,
+        "storageGB": 9,
+        "directx": "10"
+      },
+      "recommended": {
+        "os": "Windows 10 version 21H1 (build 19043) or newer",
+        "cpu": "Intel Core i5-3470",
+        "gpu": "GeForce GTX 1050 (2GB), Radeon R9 380 (2GB)",
+        "vramGB": 2,
+        "ramGB": 8,
+        "storageGB": 9,
+        "directx": "10"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/367520/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "terraria",
+    "title": "Terraria",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2011,
+    "requirements": {
+      "minimum": {
+        "os": "Windows Xp, Vista, 7, 8/8.1, 10",
+        "cpu": "2.0 Ghz",
+        "gpu": "128mb Video Memory, capable of Shader Model 2.0+",
+        "vramGB": null,
+        "ramGB": 2.5,
+        "storageGB": 1,
+        "directx": "9"
+      },
+      "recommended": {
+        "os": "Windows 7, 8/8.1, 10",
+        "cpu": "Dual Core 3.0 Ghz",
+        "gpu": "256mb Video Memory, capable of Shader Model 2.0+",
+        "vramGB": null,
+        "ramGB": 4,
+        "storageGB": 1,
+        "directx": "9"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/105600/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "rocket-league",
+    "title": "Rocket League",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2015,
+    "requirements": {
+      "minimum": {
+        "os": null,
+        "cpu": "2.5 GHz Dual core",
+        "gpu": "NVIDIA GeForce 760, AMD Radeon R7 270X, or better",
+        "vramGB": null,
+        "ramGB": 4,
+        "storageGB": 20,
+        "directx": "11"
+      },
+      "recommended": {
+        "os": null,
+        "cpu": "3.0+ GHz Quad core",
+        "gpu": "NVIDIA GeForce GTX 1060, AMD Radeon RX 470, or better",
+        "vramGB": null,
+        "ramGB": 8,
+        "storageGB": 20,
+        "directx": "11"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/252950/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "the-witcher-3",
+    "title": "The Witcher 3: Wild Hunt",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2015,
+    "requirements": {
+      "minimum": {
+        "os": null,
+        "cpu": "Intel CPU Core i5-2500K 3.3GHz / AMD A10-5800K APU (3.8GHz)",
+        "gpu": "Nvidia GPU GeForce GTX 660 / AMD GPU Radeon HD 7870",
+        "vramGB": null,
+        "ramGB": 6,
+        "storageGB": 50,
+        "directx": "11"
+      },
+      "recommended": {
+        "os": "64-bit Windows 10/11",
+        "cpu": "Intel Core i5-7400 / Ryzen 5 1600",
+        "gpu": "Nvidia GTX 1070 / Radeon RX 480",
+        "vramGB": null,
+        "ramGB": 8,
+        "storageGB": 50,
+        "directx": "12"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/292030/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "red-dead-redemption-2",
+    "title": "Red Dead Redemption 2",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2019,
+    "requirements": {
+      "minimum": {
+        "os": "Windows 10 - 64-bit",
+        "cpu": "Intel Core™ i5-2500K / AMD FX-6300",
+        "gpu": "Nvidia GeForce GTX 770 2GB / AMD Radeon R9 280 3GB",
+        "vramGB": 2,
+        "ramGB": 8,
+        "storageGB": 150,
+        "directx": null
+      },
+      "recommended": {
+        "os": "Windows 10 - 64-bit",
+        "cpu": "Intel Core™ i7-4770K / AMD Ryzen 5 1500X",
+        "gpu": "Nvidia GeForce GTX 1060 6GB / AMD Radeon RX 480 4GB",
+        "vramGB": 6,
+        "ramGB": 12,
+        "storageGB": 150,
+        "directx": null
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/1174180/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "hogwarts-legacy",
+    "title": "Hogwarts Legacy",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2023,
+    "requirements": {
+      "minimum": {
+        "os": "64-bit Windows 10",
+        "cpu": "Intel Core i5-6600 (3.3Ghz) or AMD Ryzen 5 1400 (3.2Ghz)",
+        "gpu": "NVIDIA GeForce GTX 960 4GB or AMD Radeon RX 470 4GB",
+        "vramGB": 4,
+        "ramGB": 16,
+        "storageGB": 85,
+        "directx": "12"
+      },
+      "recommended": {
+        "os": "64-bit Windows 10",
+        "cpu": "Intel Core i7-8700 (3.2Ghz) or AMD Ryzen 5 3600 (3.6 Ghz)",
+        "gpu": "NVIDIA GeForce 1080 Ti or AMD Radeon RX 5700 XT or INTEL Arc A770",
+        "vramGB": null,
+        "ramGB": 16,
+        "storageGB": 85,
+        "directx": "12"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/990080/",
+      "retrievedAt": "2026-08-22"
+    }
+  },
+  {
+    "id": "deep-rock-galactic",
+    "title": "Deep Rock Galactic",
+    "platform": [
+      "Windows"
+    ],
+    "releaseYear": 2020,
+    "requirements": {
+      "minimum": {
+        "os": null,
+        "cpu": "Intel i5, 3rd gen (or equivalent)",
+        "gpu": "NVIDIA GeForce GTX 660 or AMD Radeon HD 7870",
+        "vramGB": null,
+        "ramGB": 6,
+        "storageGB": 3,
+        "directx": "11"
+      },
+      "recommended": {
+        "os": "Windows 10 64 Bit",
+        "cpu": "Intel i5, 7th gen (or equivalent)",
+        "gpu": "NVIDIA 970 / AMD Radeon 290",
+        "vramGB": null,
+        "ramGB": 8,
+        "storageGB": 3,
+        "directx": "11"
+      }
+    },
+    "source": {
+      "name": "Steam store page",
+      "url": "https://store.steampowered.com/app/548430/",
+      "retrievedAt": "2026-08-22"
+    }
   }
 ]

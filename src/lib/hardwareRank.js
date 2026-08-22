@@ -18,7 +18,8 @@
 
 export const GPU_RANK = [
   'intel uhd', 'intel hd', 'intel iris xe', 'apple m1', 'vega 8', 'vega 11',
-  'gtx 1050', 'gtx 1050 ti', 'gtx 1650', 'rx 570', 'gtx 970', 'rx 480', 'rx 580',
+  'hd 7750', 'gtx 560 ti', 'geforce 760', 'r7 270x', 'gtx 660', 'hd 7870', 'gtx 770', 'r9 280',
+  'gtx 1050', 'gtx 1050 ti', 'gtx 1650', 'rx 570', 'gtx 960', 'rx 470', 'gtx 970', 'nvidia 970', 'amd radeon 290', 'rx 480', 'rx 580',
   'gtx 1060', 'gtx 1660', 'gtx 1660 super', 'gtx 1660 ti', 'rx 590',
   'gtx 1070', 'rx 5600 xt', 'rtx 2060',
   'gtx 1070 ti', 'gtx 1080', 'rx 5700', 'rtx 3050',
@@ -36,16 +37,26 @@ export const GPU_RANK = [
   'rtx 4090',
 ]
 
+// Laptop/mobile CPU SKUs (Intel "U"/"H"-series, AMD "U"/"H"-series) are
+// interleaved by roughly equivalent real-world gaming performance to their
+// desktop counterparts, not by generation/launch date — a low-power U-series
+// chip is meaningfully weaker than a desktop chip from the same generation,
+// which matters since a large share of gaming laptops run U-series CPUs
+// paired with a discrete GPU (verified against a real Optimus laptop with an
+// i7-8565U during implementation — without these entries, EVERY game showed
+// "insufficient data" on real laptop hardware because the table only covered
+// desktop SKUs).
 export const CPU_RANK = [
-  'i3-8100', 'ryzen 3 1200', 'i3-10100', 'ryzen 3 3100',
-  'i5-7400', 'ryzen 5 1600', 'i5-8400', 'ryzen 3 3300x', 'ryzen 5 2600',
-  'i5-9400', 'ryzen 5 2600x', 'i7-7700', 'ryzen 5 3600',
-  'i5-9600k', 'ryzen 7 2700x', 'i5-10400', 'i7-8700',
-  'ryzen 5 5600', 'i5-11400', 'i7-9700k', 'ryzen 7 3700x',
-  'i5-12400', 'ryzen 5 5600x', 'i7-10700k', 'ryzen 7 5700x',
-  'i5-13400', 'i7-11700k', 'ryzen 7 5800x',
-  'i7-12700', 'i7-12700k', 'ryzen 9 5900x', 'ryzen 7 5800x3d',
-  'i7-13700k', 'ryzen 7 7700x', 'ryzen 7 7800x3d', 'i9-12900k',
+  'i3-3240', 'fx-4300', 'i5-3470', 'i5-2500k', 'a10-5800k', 'fx-6300',
+  'i3-8100', 'ryzen 3 1200', 'i5-8250u', 'i7-8565u', 'i5-8265u', 'i3-10100', 'ryzen 3 3100',
+  'i5-7400', 'ryzen 5 1600', 'i5-6600', 'ryzen 5 1400', 'i5-8400', 'ryzen 3 3300x', 'ryzen 5 2600',
+  'ryzen 5 4500u', 'i5-1035g1', 'i5-9400', 'ryzen 5 2600x', 'i7-7700', 'i7-4770k', 'ryzen 5 1500x', 'ryzen 5 3600',
+  'i5-9300h', 'i5-1135g7', 'i5-9600k', 'ryzen 7 2700x', 'i5-10400', 'i7-8700', 'ryzen 7 4800u',
+  'i7-9750h', 'i7-1165g7', 'ryzen 5 5600', 'i5-11400', 'i7-9700k', 'ryzen 7 3700x',
+  'i7-10750h', 'ryzen 7 4800h', 'i5-12400', 'ryzen 5 5600x', 'i7-10700k', 'ryzen 7 5700x',
+  'i5-1240p', 'i5-13400', 'i7-11700k', 'ryzen 7 5800x', 'ryzen 9 5900hx',
+  'i7-12700', 'i7-12700k', 'ryzen 9 5900x', 'ryzen 7 5800x3d', 'i7-12700h',
+  'i7-13700k', 'ryzen 7 7700x', 'ryzen 7 7800x3d', 'i9-12900k', 'i9-13900hx',
   'i9-13900k', 'ryzen 9 7900x', 'ryzen 9 7950x',
 ]
 
