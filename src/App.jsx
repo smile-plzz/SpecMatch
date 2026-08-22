@@ -27,7 +27,7 @@ export default function App() {
   const prefs = getPrefs()
   const [specs, setSpecs] = useState(prefs.specs)
   const [screen, setScreen] = useState(specs ? 'search' : 'landing')
-  const [activeGameId, setActiveGameId] = useState(null)
+  const [activeGame, setActiveGame] = useState(null)
   const [theme, setTheme] = useState(prefs.theme)
   const { toasts, dismissToast } = useToast()
 
@@ -51,8 +51,8 @@ export default function App() {
     completeUpload(detectBrowserSpecs())
   }
 
-  function openGame(gameId) {
-    setActiveGameId(gameId)
+  function openGame(game) {
+    setActiveGame(game)
     setScreen('result')
   }
 
@@ -129,7 +129,7 @@ export default function App() {
           <div className="topbar__brand"><span className="sidebar__brand-mark"><IconGamepad size={17} /></span></div>
           <div className="topbar__titles">
             <h2>{screen === 'result' ? 'Compatibility' : 'Search'}</h2>
-            <p>{screen === 'result' ? 'Component-by-component, not a guess.' : 'Search-first — a small curated set of games, checked honestly.'}</p>
+            <p>{screen === 'result' ? 'Component-by-component, not a guess.' : 'Live search — verdicts only where requirements are verified.'}</p>
           </div>
           <div className="topbar__actions">
             <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle theme">
@@ -142,7 +142,7 @@ export default function App() {
           {screen === 'search' && <GameSearch specs={specs} onSelect={openGame} />}
           {screen === 'result' && (
             <CompatibilityResult
-              gameId={activeGameId}
+              game={activeGame}
               specs={specs}
               onBack={() => setScreen('search')}
               onCompareMyPC={() => setScreen('setup')}

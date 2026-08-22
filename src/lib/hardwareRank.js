@@ -18,7 +18,7 @@
 
 export const GPU_RANK = [
   'intel uhd', 'intel hd', 'intel iris xe', 'apple m1', 'vega 8', 'vega 11',
-  'gtx 1050', 'gtx 1050 ti', 'gtx 1650', 'rx 570', 'rx 580',
+  'gtx 1050', 'gtx 1050 ti', 'gtx 1650', 'rx 570', 'gtx 970', 'rx 480', 'rx 580',
   'gtx 1060', 'gtx 1660', 'gtx 1660 super', 'gtx 1660 ti', 'rx 590',
   'gtx 1070', 'rx 5600 xt', 'rtx 2060',
   'gtx 1070 ti', 'gtx 1080', 'rx 5700', 'rtx 3050',
@@ -38,17 +38,23 @@ export const GPU_RANK = [
 
 export const CPU_RANK = [
   'i3-8100', 'ryzen 3 1200', 'i3-10100', 'ryzen 3 3100',
-  'i5-7400', 'ryzen 5 1600', 'i5-8400', 'ryzen 5 2600',
+  'i5-7400', 'ryzen 5 1600', 'i5-8400', 'ryzen 3 3300x', 'ryzen 5 2600',
   'i5-9400', 'ryzen 5 2600x', 'i7-7700', 'ryzen 5 3600',
   'i5-9600k', 'ryzen 7 2700x', 'i5-10400', 'i7-8700',
   'ryzen 5 5600', 'i5-11400', 'i7-9700k', 'ryzen 7 3700x',
   'i5-12400', 'ryzen 5 5600x', 'i7-10700k', 'ryzen 7 5700x',
   'i5-13400', 'i7-11700k', 'ryzen 7 5800x',
-  'i7-12700k', 'ryzen 9 5900x', 'ryzen 7 5800x3d',
-  'i7-13700k', 'ryzen 7 7700x', 'i9-12900k',
+  'i7-12700', 'i7-12700k', 'ryzen 9 5900x', 'ryzen 7 5800x3d',
+  'i7-13700k', 'ryzen 7 7700x', 'ryzen 7 7800x3d', 'i9-12900k',
   'i9-13900k', 'ryzen 9 7900x', 'ryzen 9 7950x',
 ]
 
+// Strips punctuation (hyphens included) so "i5-8400" and "i5 8400" compare
+// equal. This MUST be applied identically to both the input string and the
+// reference-table entries below — applying it only to the input (an earlier
+// bug here) meant every hyphenated Intel "iX-XXXX" table entry could never
+// match anything, since the input's hyphen was stripped but the table
+// entry's wasn't.
 function normalize(str) {
   return (str || '').toLowerCase().replace(/[^a-z0-9\s.]/g, ' ').replace(/\s+/g, ' ').trim()
 }
@@ -59,9 +65,10 @@ function findRank(modelString, table) {
   let bestIdx = null
   let bestLen = 0
   table.forEach((entry, idx) => {
-    if (s.includes(entry) && entry.length > bestLen) {
+    const normEntry = normalize(entry)
+    if (s.includes(normEntry) && normEntry.length > bestLen) {
       bestIdx = idx
-      bestLen = entry.length
+      bestLen = normEntry.length
     }
   })
   return bestIdx

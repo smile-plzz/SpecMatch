@@ -76,15 +76,27 @@ function guessOsName() {
 // (today's shape) rather than an error — this keeps existing report.json
 // files from suddenly failing validation. Bump `CURRENT_REPORT_VERSION` and
 // branch here if a future field addition needs real migration logic.
-const CURRENT_REPORT_VERSION = '2.0'
-const ALLOWED_KEYS = ['reportVersion', 'source', 'collectedAt', 'os', 'cpu', 'gpu', 'ramGB', 'storage', 'display', 'directx']
+// v3 (collect-specs.ps1's current output) adds richer nested data —
+// per-adapter GPU list with integrated/discrete classification, per-field
+// confidence flags, form-factor (laptop/battery) detection, and a
+// directxInfo object. It keeps the same flat `gpu`/`ramGB`/`directx` fields
+// v1/v2 consumers (the compatibility engine, SpecPanel, rig-card) already
+// read, specifically so none of that code needed to change for the schema
+// bump — the extra v3 fields are additive, read only by callers that ask
+// for them (e.g. a future "integrated GPU also detected" note).
+const CURRENT_REPORT_VERSION = '3.0'
+const SUPPORTED_VERSIONS = ['1.0', '2.0', '3.0']
+const ALLOWED_KEYS = [
+  'reportVersion', 'source', 'collectedAt', 'os', 'cpu', 'gpu', 'integratedGpu',
+  'gpus', 'ram', 'ramGB', 'storage', 'display', 'directx', 'directxInfo', 'formFactor',
+]
 
 export function parseUtilityReport(json) {
   if (!json || typeof json !== 'object') throw new Error('Invalid report: not an object')
   const keys = Object.keys(json)
   const unknown = keys.filter((k) => !ALLOWED_KEYS.includes(k))
   if (unknown.length) throw new Error(`Invalid report: unexpected fields ${unknown.join(', ')}`)
-  if (json.reportVersion && json.reportVersion !== CURRENT_REPORT_VERSION && json.reportVersion !== '1.0') {
+  if (json.reportVersion && !SUPPORTED_VERSIONS.includes(json.reportVersion)) {
     throw new Error(`Invalid report: unsupported reportVersion "${json.reportVersion}"`)
   }
 
@@ -95,19 +107,34 @@ export function parseUtilityReport(json) {
     os: json.os || { name: null, version: null, arch: null },
     cpu: {
       model: json.cpu?.model || null,
+      manufacturer: json.cpu?.manufacturer || null,
       cores: json.cpu?.cores || null,
       threads: json.cpu?.threads || null,
+      baseClockMHz: json.cpu?.baseClockMHz || null,
+      architecture: json.cpu?.architecture || null,
       tier: guessCpuTier(json.cpu?.cores),
+      confidence: json.cpu?.confidence || (json.cpu?.model ? 'high' : 'unknown'),
     },
     gpu: {
       model: json.gpu?.model || null,
+      vendor: json.gpu?.vendor || null,
+      integrated: json.gpu?.integrated ?? null,
       vramGB: json.gpu?.vramGB || null,
+      driverVersion: json.gpu?.driverVersion || null,
       tier: guessGpuTier(json.gpu?.model),
+      confidence: json.gpu?.confidence || (json.gpu?.model ? 'high' : 'unknown'),
     },
-    ramGB: json.ramGB || null,
+    // v3 only — null on v1/v2 reports, which is correct (they never
+    // distinguished a second adapter at all).
+    integratedGpu: json.integratedGpu || null,
+    gpus: json.gpus || null,
+    ram: json.ram || null,
+    ramGB: json.ramGB || json.ram?.totalGB || null,
     storage: json.storage || { type: null, freeGB: null },
     display: json.display || { width: null, height: null, refreshHz: null },
-    directx: json.directx || null,
+    directx: json.directx || json.directxInfo?.version || null,
+    directxInfo: json.directxInfo || null,
+    formFactor: json.formFactor || null,
   }
 }
 

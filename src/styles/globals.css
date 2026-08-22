@@ -1033,6 +1033,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .profile-stat__label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
 .profile-stat__label svg { color: var(--accent); }
 .profile-stat__value { font-size: 1rem; font-weight: 600; }
+.profile-stat__sub { font-size: 0.76rem; color: var(--text-dim); }
 
 /* ---- search ---- */
 .search-screen { display: flex; flex-direction: column; gap: 1.25rem; max-width: 720px; }
@@ -1057,6 +1058,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .search-result-row__title { font-weight: 600; font-size: 0.95rem; }
 .search-result-row__meta { font-size: 0.78rem; color: var(--text-dim); }
 .search-result-row__arrow { margin-left: auto; color: var(--text-dim); }
+.search-result-row--skeleton { height: 68px; }
 
 .verdict-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; background: currentColor; }
 .verdict-dot--smooth { color: var(--smooth); }
@@ -1108,6 +1110,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .settings-band { padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--text-muted); }
 .source-line { font-size: 0.78rem; color: var(--text-dim); }
+
+.about-game { display: flex; flex-direction: column; gap: 0.9rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.about-game__attribution { font-size: 0.76rem; color: var(--text-dim); margin: 0; }
 
 /* ---- compatibility table: one dataset, two renderings ---- */
 .compat-table-wrap { display: block; }
